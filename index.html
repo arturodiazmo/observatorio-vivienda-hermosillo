@@ -9,6 +9,7 @@
 <meta property='og:description' content='Precios, créditos, oferta de vivienda nueva, vivienda deshabitada por AGEB y una propuesta de indicadores para el Observatorio de Vivienda de Hermosillo, con datos abiertos de INEGI, SHF y SEDATU.'>
 <meta property='og:type' content='website'>
 <link rel='icon' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234377BC'/%3E%3Cpath d='M8 16 16 9l8 7v8h-5v-5h-6v5H8z' fill='white'/%3E%3C/svg%3E">
+<link rel='stylesheet' href='css/maplibre-gl.css'>
 <style>
 :root {
   color-scheme: light dark;
@@ -42,6 +43,20 @@ span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
 @media (prefers-reduced-motion: no-preference) { .dash-skeleton { animation: ovh-pulso 1.4s ease-in-out infinite; } }
 @keyframes ovh-pulso { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
 .dash-select { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background-color: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 7px 10px; }
+.ovh [data-draw='ageb-mapa'] { min-height: 380px; }
+.ovh-mapa-gl { height: clamp(380px, 64vh, 620px); border-radius: var(--cds-radius); overflow: hidden; border: 1px solid var(--color-border-line); }
+.ovh-rank { width: 22px; height: 22px; border-radius: 50%; background: var(--color-fg); color: var(--color-bg); font: 600 11px/1 var(--font-anthropic-sans); display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-bg); box-shadow: 0 1px 4px rgba(0, 0, 0, .35); pointer-events: none; }
+.ovh-popup { pointer-events: none; }
+.ovh-popup .maplibregl-popup-content { background: var(--cds-surface-popover); color: var(--color-fg); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 8px 12px; font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-caption); min-width: 170px; }
+.ovh-popup .maplibregl-popup-tip { display: none; }
+.maplibregl-ctrl-attrib { font-family: var(--font-anthropic-sans); }
+@media (prefers-color-scheme: dark) {
+  .maplibregl-ctrl-group { background: #1B2633; }
+  .maplibregl-ctrl-group button + button { border-top-color: #2E3B4B; }
+  .maplibregl-ctrl button .maplibregl-ctrl-icon { filter: invert(1); }
+  .maplibregl-ctrl-attrib, .maplibregl-ctrl-attrib.maplibregl-compact { background: rgba(27, 38, 51, .88); color: #A3ADBA; }
+  .maplibregl-ctrl-attrib a { color: #C9D3DF; }
+}
 .ovh-footer { border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-lg); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: flex; flex-direction: column; gap: 4px; }
 </style>
 <style>
@@ -320,7 +335,7 @@ span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
       </ul>
       <div class='ovh-chart dash-skeleton' data-draw='ageb-mapa' data-source='ageb_geo ageb_mapa ageb_top'></div>
       <p class='ovh-text'>Las 10 AGEB suman <b data-draw='v' data-source='ageb_top_resumen' data-field='deshabitadas' data-row='0' class='dash-skeleton'>—</b> viviendas deshabitadas, <b data-draw='v' data-source='ageb_top_resumen' data-field='pct' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de las deshabitadas en AGEB urbanas. Pasa el cursor sobre una fila de la tabla para ubicar su AGEB, o haz clic en la fila o en el mapa para acercarte.</p>
-      <p class='ovh-note'>Colores: porcentaje de viviendas particulares deshabitadas en 2020. Límites del Marco Geoestadístico de INEGI (diciembre de 2025) para la ciudad de Hermosillo; no incluye las otras localidades urbanas del municipio. Sin color: AGEB creadas después de 2020, con menos de 20 viviendas particulares o con datos reservados.</p>
+      <p class='ovh-note'>Colores: porcentaje de viviendas particulares deshabitadas en 2020. Mapa base: OpenFreeMap, con datos de OpenStreetMap. Límites del Marco Geoestadístico de INEGI (diciembre de 2025) para la ciudad de Hermosillo; no incluye las otras localidades urbanas del municipio. Sin color: AGEB creadas después de 2020, con menos de 20 viviendas particulares o con datos reservados. Para acercar usa los botones + y −, Ctrl o ⌘ con la rueda del ratón, o dos dedos en el celular.</p>
     </div>
   </section>
 
@@ -410,6 +425,7 @@ span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
 <script src='js/d3.min.js'></script>
 <script src='js/dash-runtime.js'></script>
 <script src='js/app.js'></script>
+<script src='js/maplibre-gl.js'></script>
 <script src='js/mapa.js'></script>
 </body>
 </html>

@@ -10,9 +10,10 @@ Sitio web estático con la línea base del Observatorio de Vivienda de Hermosill
 | --- | --- |
 | `index.html` | Página del tablero |
 | `js/app.js` | Cálculos de indicadores y gráficas |
-| `js/mapa.js` | Mapa de vivienda deshabitada por AGEB |
+| `js/mapa.js` | Mapa de vivienda deshabitada por AGEB, con calles de fondo |
 | `js/dash-runtime.js` | Motor que carga los datos y dibuja la página |
 | `js/d3.min.js` | D3 v7 (ISC, © Mike Bostock) |
+| `js/maplibre-gl.js`, `css/maplibre-gl.css` | MapLibre GL JS v5 (BSD-3-Clause) |
 | `data/` | Datos usados por la página, en CSV y JSON |
 
 ## Datos
@@ -27,6 +28,8 @@ Sitio web estático con la línea base del Observatorio de Vivienda de Hermosill
 | `hermosillo_ageb.csv` | INEGI, Censo de Población y Vivienda 2020 (resultados por AGEB) | 2020 |
 | `ageb_geometria.json` | INEGI, Marco Geoestadístico (AGEB urbanas, localidad 0001), simplificado a ~4 m | dic 2025 |
 | `propuesta_indicadores.csv` | Elaboración propia | — |
+
+El mapa base es de [OpenFreeMap](https://openfreemap.org) (estilos Positron y Dark, © OpenMapTiles, datos © colaboradores de OpenStreetMap), gratuito y sin clave de acceso.
 
 Datos descargados el 19 de noviembre de 2026. Son datos abiertos de uso libre con atribución a INEGI, SHF y SEDATU.
 
