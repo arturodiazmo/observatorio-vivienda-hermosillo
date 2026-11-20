@@ -1,0 +1,237 @@
+/* Hermosillo ¿Cómo Vamos? — tokens del design system (generado de project/tokens.json).
+   Tema Papel por defecto; Inverso en [data-theme="inverso"] y cuando el lector prefiere modo oscuro. */
+:root {
+  --font-display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --font-texto: "Source Sans 3", "Source Sans Pro", "Segoe UI", Arial, sans-serif;
+  --font-datos: "IBM Plex Mono", Consolas, "Courier New", monospace;
+  --espacio-1: 4px;
+  --espacio-2: 8px;
+  --espacio-3: 12px;
+  --espacio-4: 16px;
+  --espacio-5: 24px;
+  --espacio-6: 32px;
+  --espacio-7: 48px;
+  --espacio-8: 64px;
+  --espacio-9: 96px;
+  --radio-0: 0;
+  --radio-1: 2px;
+  --radio-2: 4px;
+  --radio-pleno: 999px;
+  --medida-lectura: 68ch;
+  --contenedor: 1200px;
+  --contenedor-lectura: 720px;
+  --margen-web: 32px;
+  --margen-web-movil: 16px;
+  --cabecera-alto: 72px;
+  --objetivo-tactil: 44px;
+  --trazo-fino: 1px;
+  --trazo-medio: 2px;
+  --trazo-grueso: 4px;
+  --duracion-rapida: 120ms;
+  --duracion-media: 200ms;
+  --curva: cubic-bezier(0.2, 0, 0, 1);
+  --capa-cabecera: 100;
+  --capa-menu: 200;
+  --capa-tooltip: 300;
+  --capa-modal: 400;
+  --papel: #ffffff;
+  --papel-arena: #f6f2ea;
+  --papel-azul: #edf2f9;
+  --linea: #d9dfe8;
+  --linea-fuerte: #75839a;
+  --tinta: #16243b;
+  --tinta-2: #44526b;
+  --tinta-3: #56637a;
+  --azul-hcv: #4377bc;
+  --azul-profundo: #1d3a64;
+  --azul-claro: #d3e1f3;
+  --azul-texto: #2c5c9c;
+  --sobre-azul: #ffffff;
+  --ocre: #bc8843;
+  --ocre-claro: #f3e5cf;
+  --ocre-texto: #865a1e;
+  --sobre-ocre: #16243b;
+  --avanza: #1f5fa6;
+  --avanza-fondo: #e3edf9;
+  --estable: #56627a;
+  --estable-fondo: #eceff4;
+  --retrocede: #a8401f;
+  --retrocede-fondo: #fbe9e2;
+  --dato-1: #4377bc;
+  --dato-2: #bc8843;
+  --dato-3: #7f4995;
+  --dato-4: #359b75;
+  --dato-5: #924666;
+  --dato-6: #1f93b8;
+  --dato-sin-dato: #b7bfcc;
+  --secuencial-1: #9cb9e2;
+  --secuencial-2: #7199d0;
+  --secuencial-3: #4377bc;
+  --secuencial-4: #2e5994;
+  --secuencial-5: #1b3864;
+  --divergente-neg-2: #a8401f;
+  --divergente-neg-1: #e3a089;
+  --divergente-centro: #e6e9ee;
+  --divergente-pos-1: #94b3de;
+  --divergente-pos-2: #2b5591;
+  --accion: #4377bc;
+  --accion-hover: #2c5c9c;
+  --accion-activo: #1d3a64;
+  --sobre-accion: #ffffff;
+  --foco: #2c5c9c;
+  --deshabilitado: #8c96a6;
+  --deshabilitado-fondo: #eef1f5;
+  --velo: rgba(15, 31, 54, 0.6);
+  --sobre-dato-claro: #16243b;
+  --sobre-dato-oscuro: #ffffff;
+  --sombra-flotante: 0 8px 24px rgba(15, 31, 54, 0.16);
+  --info: var(--azul-texto);
+  --info-fondo: var(--papel-azul);
+  --exito: var(--avanza);
+  --exito-fondo: var(--avanza-fondo);
+  --aviso: var(--ocre-texto);
+  --aviso-fondo: var(--ocre-claro);
+  --error: var(--retrocede);
+  --error-fondo: var(--retrocede-fondo);
+}
+[data-theme="inverso"] {
+  --papel: #0f1f36;
+  --papel-arena: #1b2a41;
+  --papel-azul: #142b4a;
+  --linea: #2c4060;
+  --linea-fuerte: #7488a8;
+  --tinta: #f4f6fa;
+  --tinta-2: #c9d2e0;
+  --tinta-3: #a7b4c8;
+  --azul-hcv: #4377bc;
+  --azul-profundo: #2a4f80;
+  --azul-claro: #224572;
+  --azul-texto: #93b6e8;
+  --sobre-azul: #ffffff;
+  --ocre: #bc8843;
+  --ocre-claro: #4a3b24;
+  --ocre-texto: #e2b675;
+  --sobre-ocre: #16243b;
+  --avanza: #8fb8ee;
+  --avanza-fondo: #18375f;
+  --estable: #b8c2d3;
+  --estable-fondo: #24344f;
+  --retrocede: #f39a78;
+  --retrocede-fondo: #47241a;
+  --dato-1: #4377bc;
+  --dato-2: #bc8843;
+  --dato-3: #9b5bb6;
+  --dato-4: #47aa84;
+  --dato-5: #aa4d75;
+  --dato-6: #299abe;
+  --dato-sin-dato: #4a5a74;
+  --secuencial-1: #30598f;
+  --secuencial-2: #4377bc;
+  --secuencial-3: #6e98d2;
+  --secuencial-4: #9dbce6;
+  --secuencial-5: #cddcf2;
+  --divergente-neg-2: #f08f6c;
+  --divergente-neg-1: #8a4a36;
+  --divergente-centro: #3a4a63;
+  --divergente-pos-1: #3f6aa6;
+  --divergente-pos-2: #9dbce6;
+  --accion: #93b6e8;
+  --accion-hover: #b5cdf0;
+  --accion-activo: #cddcf2;
+  --sobre-accion: #0f1f36;
+  --foco: #93b6e8;
+  --deshabilitado: #5b6b85;
+  --deshabilitado-fondo: #1b2a41;
+  --velo: rgba(4, 10, 20, 0.75);
+  --sobre-dato-claro: #0f1f36;
+  --sobre-dato-oscuro: #ffffff;
+  --sombra-flotante: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --info: var(--azul-texto);
+  --info-fondo: var(--papel-azul);
+  --exito: var(--avanza);
+  --exito-fondo: var(--avanza-fondo);
+  --aviso: var(--ocre-texto);
+  --aviso-fondo: var(--ocre-claro);
+  --error: var(--retrocede);
+  --error-fondo: var(--retrocede-fondo);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="papel"]) {
+    --papel: #0f1f36;
+    --papel-arena: #1b2a41;
+    --papel-azul: #142b4a;
+    --linea: #2c4060;
+    --linea-fuerte: #7488a8;
+    --tinta: #f4f6fa;
+    --tinta-2: #c9d2e0;
+    --tinta-3: #a7b4c8;
+    --azul-hcv: #4377bc;
+    --azul-profundo: #2a4f80;
+    --azul-claro: #224572;
+    --azul-texto: #93b6e8;
+    --sobre-azul: #ffffff;
+    --ocre: #bc8843;
+    --ocre-claro: #4a3b24;
+    --ocre-texto: #e2b675;
+    --sobre-ocre: #16243b;
+    --avanza: #8fb8ee;
+    --avanza-fondo: #18375f;
+    --estable: #b8c2d3;
+    --estable-fondo: #24344f;
+    --retrocede: #f39a78;
+    --retrocede-fondo: #47241a;
+    --dato-1: #4377bc;
+    --dato-2: #bc8843;
+    --dato-3: #9b5bb6;
+    --dato-4: #47aa84;
+    --dato-5: #aa4d75;
+    --dato-6: #299abe;
+    --dato-sin-dato: #4a5a74;
+    --secuencial-1: #30598f;
+    --secuencial-2: #4377bc;
+    --secuencial-3: #6e98d2;
+    --secuencial-4: #9dbce6;
+    --secuencial-5: #cddcf2;
+    --divergente-neg-2: #f08f6c;
+    --divergente-neg-1: #8a4a36;
+    --divergente-centro: #3a4a63;
+    --divergente-pos-1: #3f6aa6;
+    --divergente-pos-2: #9dbce6;
+    --accion: #93b6e8;
+    --accion-hover: #b5cdf0;
+    --accion-activo: #cddcf2;
+    --sobre-accion: #0f1f36;
+    --foco: #93b6e8;
+    --deshabilitado: #5b6b85;
+    --deshabilitado-fondo: #1b2a41;
+    --velo: rgba(4, 10, 20, 0.75);
+    --sobre-dato-claro: #0f1f36;
+    --sobre-dato-oscuro: #ffffff;
+    --sombra-flotante: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --info: var(--azul-texto);
+    --info-fondo: var(--papel-azul);
+    --exito: var(--avanza);
+    --exito-fondo: var(--avanza-fondo);
+    --aviso: var(--ocre-texto);
+    --aviso-fondo: var(--ocre-claro);
+    --error: var(--retrocede);
+    --error-fondo: var(--retrocede-fondo);
+  }
+}
+.portada { font-family: var(--font-display); font-size: 64px; line-height: 60px; font-weight: 800; letter-spacing: -0.02em; }
+.cifra { font-family: var(--font-display); font-size: 56px; line-height: 56px; font-weight: 700; letter-spacing: -0.02em; }
+.titulo-1 { font-family: var(--font-display); font-size: 40px; line-height: 44px; font-weight: 700; letter-spacing: -0.015em; }
+.titulo-2 { font-family: var(--font-display); font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em; }
+.titulo-3 { font-family: var(--font-display); font-size: 21px; line-height: 27px; font-weight: 600; }
+.entradilla { font-family: var(--font-texto); font-size: 19px; line-height: 28px; font-weight: 400; }
+.cuerpo { font-family: var(--font-texto); font-size: 15px; line-height: 22px; font-weight: 400; }
+.cita { font-family: var(--font-texto); font-size: 20px; line-height: 28px; font-weight: 400; font-style: italic; }
+.tabla { font-family: var(--font-texto); font-size: 13px; line-height: 18px; font-weight: 400; }
+.nota { font-family: var(--font-texto); font-size: 12px; line-height: 16px; font-weight: 400; }
+.antetitulo { font-family: var(--font-datos); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+.eje { font-family: var(--font-datos); font-size: 11px; line-height: 14px; font-weight: 400; }
+.hero { font-family: var(--font-display); font-size: 56px; line-height: 60px; font-weight: 800; letter-spacing: -0.02em; }
+.cuerpo-web { font-family: var(--font-texto); font-size: 18px; line-height: 28px; font-weight: 400; }
+.ui { font-family: var(--font-texto); font-size: 15px; line-height: 20px; font-weight: 600; }
+.meta { font-family: var(--font-texto); font-size: 14px; line-height: 20px; font-weight: 400; }
+@media (max-width: 640px) { .hero { font-size: 36px; line-height: 40px; } .titulo-1 { font-size: 30px; line-height: 36px; } }
