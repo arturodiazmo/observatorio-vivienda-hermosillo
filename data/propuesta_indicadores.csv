@@ -1,0 +1,38 @@
+clave,dimension,indicador,definicion,fuente,periodicidad,desagregacion,estado
+D1,Demografía y hogares,Población total,Habitantes del municipio.,INEGI · Censo 2020 y Encuesta Intercensal 2025,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+D2,Demografía y hogares,Hogares censales,Número de hogares en viviendas particulares.,INEGI · Censo 2020 y Encuesta Intercensal 2025,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+D3,Demografía y hogares,Formación anual de hogares,Hogares nuevos por año: proyección de población por tasa de jefatura de hogar; mide la demanda de vivienda.,CONAPO (proyecciones) + INEGI (EIC 2025),Anual,Municipio,Por construir
+P1,Parque habitacional y ocupación,Viviendas particulares,"Total de viviendas particulares (habitadas, deshabitadas y de uso temporal).",INEGI · Censo 2020,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+P2,Parque habitacional y ocupación,Tasa de vivienda deshabitada,Viviendas particulares deshabitadas entre viviendas particulares.,INEGI · Censo 2020,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+P3,Parque habitacional y ocupación,Tasa de vivienda de uso temporal,Viviendas de uso temporal entre viviendas particulares.,INEGI · Censo 2020,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+P4,Parque habitacional y ocupación,AGEB con vacancia alta,AGEB urbanas con 20% o más de viviendas deshabitadas.,INEGI · Censo 2020,Quinquenal,AGEB,En este tablero
+P5,Parque habitacional y ocupación,Vivienda vacía actual (estimada),Tomas domésticas sin consumo sostenido; actualiza la vacancia entre censos.,Agua de Hermosillo (padrón de usuarios),Trimestral,"Manzana, colonia",Requiere convenio
+P6,Parque habitacional y ocupación,Vivienda abandonada,Viviendas abandonadas identificadas y recuperadas.,Ayuntamiento de Hermosillo · Infonavit,Semestral,"Colonia, fraccionamiento",Requiere convenio
+H1,Habitabilidad y servicios,Viviendas con piso de tierra,Porcentaje de viviendas particulares habitadas con piso de tierra.,INEGI · Censo 2020,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+H2,Habitabilidad y servicios,Viviendas con servicios completos,"Porcentaje con agua entubada, drenaje y electricidad.",INEGI · Censo 2020,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+H3,Habitabilidad y servicios,Viviendas con internet,Porcentaje de viviendas habitadas con internet.,INEGI · Censo 2020,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+H4,Habitabilidad y servicios,Ocupantes por cuarto,Promedio de ocupantes por cuarto; aproxima hacinamiento.,INEGI · Censo 2020,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+H5,Habitabilidad y servicios,Viviendas de un solo cuarto,Porcentaje de viviendas habitadas con un solo cuarto.,INEGI · Censo 2020,Quinquenal,"Municipio, AGEB, manzana",En este tablero
+H6,Habitabilidad y servicios,Rezago habitacional,Viviendas con materiales precarios o hacinamiento entre el total de viviendas.,"SEDATU-CONAVI (SNIIV, con base en ENIGH)",Bienal,Municipio,"Descargable, por integrar"
+H7,Habitabilidad y servicios,Índice de marginación urbana,Grado de marginación por AGEB urbana.,CONAPO · Índice de marginación urbana 2020,Quinquenal,AGEB,"Descargable, por integrar"
+A1,Precios y asequibilidad,Variación anual del precio de la vivienda,Cambio anual del Índice SHF de precios (solo vivienda con crédito hipotecario).,SHF · Índice SHF de Precios de la Vivienda,Trimestral,Municipio,En este tablero
+A2,Precios y asequibilidad,Variación del precio a cinco años,"Cambio acumulado del Índice SHF en cinco años, frente al nacional.",SHF · Índice SHF de Precios de la Vivienda,Trimestral,Municipio,En este tablero
+A3,Precios y asequibilidad,Precio de compraventa por m²,Precio declarado por m² en operaciones registradas.,Catastro municipal (traslación de dominio),Mensual,Colonia,Requiere convenio
+A4,Precios y asequibilidad,Renta mediana anunciada,"Renta mensual mediana de vivienda anunciada, por tipo y colonia.",Captura sistemática de portales inmobiliarios,Mensual,Colonia,Por construir
+A5,Precios y asequibilidad,Años de ingreso para comprar vivienda,Precio mediano de vivienda entre ingreso anual mediano de los hogares.,SHF o Catastro + INEGI (ENIGH),Anual,Municipio,Por construir
+A6,Precios y asequibilidad,Créditos a hogares de ingreso bajo,Participación de créditos a acreditados con ingreso de 4 UMA o menos.,SEDATU · SNIIV (financiamiento),Anual,Municipio,En este tablero
+F1,Financiamiento,Créditos para vivienda por organismo,"Acciones de financiamiento de Infonavit, banca, Fovissste, CONAVI y otros.",SEDATU · SNIIV (financiamiento),Mensual,Municipio,En este tablero
+F2,Financiamiento,Monto promedio por crédito de adquisición,"Monto entre acciones para vivienda nueva y existente, por organismo.",SEDATU · SNIIV (financiamiento),Mensual,Municipio,En este tablero
+F3,Financiamiento,Morosidad de la cartera hipotecaria,Cartera vencida entre cartera total de crédito a la vivienda.,CNBV · Banxico,Mensual,Estado,"Descargable, por integrar"
+O1,Oferta y producción,Viviendas registradas en el RUV,Viviendas nuevas que inician el proceso de registro.,SEDATU · SNIIV (RUV),Mensual,Municipio,En este tablero
+O2,Oferta y producción,Viviendas verificadas y terminadas,Viviendas en verificación de obra y con producción concluida.,SEDATU · SNIIV (RUV),Mensual,Municipio,En este tablero
+O3,Oferta y producción,Inventario de vivienda nueva,"Viviendas registradas aún sin vender, al cierre de cada mes.",SEDATU · SNIIV (RUV),Mensual,Municipio,En este tablero
+O4,Oferta y producción,Registro dentro de contención urbana,Viviendas registradas por perímetro de contención urbana (U1 a U3 y fuera).,SEDATU · SNIIV (RUV),Mensual,Municipio,En este tablero
+O5,Oferta y producción,Participación de vivienda vertical,Viviendas verticales entre viviendas registradas.,SEDATU · SNIIV (RUV),Mensual,Municipio,En este tablero
+O6,Oferta y producción,Licencias de construcción habitacional,Licencias y viviendas autorizadas por colonia.,Ayuntamiento de Hermosillo (desarrollo urbano),Mensual,Colonia,Requiere convenio
+O7,Oferta y producción,Avance de Vivienda para el Bienestar,"Viviendas iniciadas, en obra y entregadas del programa federal.",CONAVI · Infonavit · Ayuntamiento,Trimestral,Desarrollo,Requiere convenio
+S1,Suelo y entorno urbano,Suelo apto para vivienda,Hectáreas disponibles para uso habitacional según el programa de desarrollo urbano.,IMPLAN Hermosillo,Anual,Zona,Requiere convenio
+S2,Suelo y entorno urbano,Huella construida y densidad habitacional,Superficie construida y viviendas por hectárea.,Open Buildings + INEGI (Censo 2020),Anual,"AGEB, hexágono",Por construir
+S3,Suelo y entorno urbano,Asentamientos irregulares,Colonias irregulares y en proceso de regularización.,Ayuntamiento de Hermosillo · INSUS,Semestral,Colonia,Requiere convenio
+S4,Suelo y entorno urbano,Acceso a equipamiento a 15 minutos,"Porcentaje de viviendas a 15 minutos a pie de escuela, salud y abasto.",INEGI (DENUE) + OpenStreetMap,Anual,Manzana,Por construir
+S5,Suelo y entorno urbano,Percepción de inseguridad,Población que se siente insegura en su ciudad.,INEGI · ENSU,Trimestral,Ciudad,"Descargable, por integrar"
