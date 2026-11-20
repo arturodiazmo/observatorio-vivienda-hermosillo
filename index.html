@@ -3,215 +3,110 @@
 <head>
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Observatorio de Vivienda de Hermosillo — Propuesta de indicadores</title>
+<title>¿Cómo vamos con la vivienda en Hermosillo? — Observatorio de Vivienda</title>
 <meta name='description' content='Precios, créditos, oferta de vivienda nueva, vivienda deshabitada por AGEB y una propuesta de indicadores para el Observatorio de Vivienda de Hermosillo, con datos abiertos de INEGI, SHF y SEDATU.'>
-<meta property='og:title' content='Observatorio de Vivienda de Hermosillo — Propuesta de indicadores'>
+<meta name='color-scheme' content='light dark'>
+<meta property='og:title' content='¿Cómo vamos con la vivienda en Hermosillo? — Observatorio de Vivienda'>
 <meta property='og:description' content='Precios, créditos, oferta de vivienda nueva, vivienda deshabitada por AGEB y una propuesta de indicadores para el Observatorio de Vivienda de Hermosillo, con datos abiertos de INEGI, SHF y SEDATU.'>
 <meta property='og:type' content='website'>
-<link rel='icon' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234377BC'/%3E%3Cpath d='M8 16 16 9l8 7v8h-5v-5h-6v5H8z' fill='white'/%3E%3C/svg%3E">
+<link rel='icon' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%234377BC'/%3E%3Cpath d='M8 16 16 9l8 7v8h-5v-5h-6v5H8z' fill='white'/%3E%3C/svg%3E">
+<link rel='preload' href='assets/fonts/archivo-latin-700-normal.woff2' as='font' type='font/woff2' crossorigin>
+<link rel='preload' href='assets/fonts/source-sans-3-latin-400-normal.woff2' as='font' type='font/woff2' crossorigin>
+<link rel='stylesheet' href='assets/hcv/fonts.css'>
+<link rel='stylesheet' href='assets/hcv/tokens.css'>
+<link rel='stylesheet' href='assets/hcv/hcv.css'>
 <link rel='stylesheet' href='css/maplibre-gl.css'>
-<style>
-:root {
-  color-scheme: light dark;
-  --color-fg: #1F2328; --color-fg-muted: #5B6470; --color-bg: #FFFFFF; --color-panel: #F7F9FC; --color-border-line: #E1E6EE;
-  --color-ok: #2E7D32; --color-warn: #B26A00; --color-bad: #C62828;
-  --font-anthropic-sans: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-anthropic-serif: Georgia, 'Times New Roman', serif;
-  --cds-font-size-caption: 13px; --cds-font-size-body: 16px; --cds-font-size-heading: 20px; --cds-font-size-title: clamp(26px, 4vw, 34px);
-  --cds-font-weight-medium: 600;
-  --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 12px; --cds-gap-lg: 16px; --cds-gap-xl: 32px;
-  --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 18px; --cds-radius: 10px;
-  --cds-chart-grid: #EAEEF3; --cds-chart-axis: #C9D1DB; --cds-chart-reference: #8A94A3; --cds-text-secondary: #5B6470;
-  --cds-surface-popover: #FFFFFF; --cds-border: #D7DEE8; --cds-shadow-popover: 0 6px 20px rgba(16, 24, 40, .14);
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-fg: #E6EAF0; --color-fg-muted: #A3ADBA; --color-bg: #0F1620; --color-panel: #16202C; --color-border-line: #263241;
-    --color-ok: #66BB6A; --color-warn: #FFB74D; --color-bad: #EF5350;
-    --cds-chart-grid: #223040; --cds-chart-axis: #3A4A5C; --cds-chart-reference: #6B7A8C; --cds-text-secondary: #A3ADBA;
-    --cds-surface-popover: #1B2633; --cds-border: #2E3B4B; --cds-shadow-popover: 0 6px 20px rgba(0, 0, 0, .45);
-  }
-}
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-body); line-height: 1.45; }
-#dash-root { max-width: 1180px; margin: 0 auto; padding: 36px 24px 56px; }
-@media (max-width: 600px) { #dash-root { padding: 20px 14px 40px; } }
-#dash-root a { color: #4377BC; }
-.dash-skeleton { background: var(--color-border-line) !important; color: transparent !important; border-radius: 6px; }
-.dash-skeleton > * { visibility: hidden; }
-span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
-@media (prefers-reduced-motion: no-preference) { .dash-skeleton { animation: ovh-pulso 1.4s ease-in-out infinite; } }
-@keyframes ovh-pulso { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
-.dash-select { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background-color: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 7px 10px; }
-.ovh [data-draw='ageb-mapa'] { min-height: 380px; }
-.ovh-mapa-gl { height: clamp(380px, 64vh, 620px); border-radius: var(--cds-radius); overflow: hidden; border: 1px solid var(--color-border-line); }
-.ovh-rank { width: 22px; height: 22px; border-radius: 50%; background: var(--color-fg); color: var(--color-bg); font: 600 11px/1 var(--font-anthropic-sans); display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-bg); box-shadow: 0 1px 4px rgba(0, 0, 0, .35); pointer-events: none; }
-.ovh-popup { pointer-events: none; }
-.ovh-popup .maplibregl-popup-content { background: var(--cds-surface-popover); color: var(--color-fg); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 8px 12px; font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-caption); min-width: 170px; }
-.ovh-popup .maplibregl-popup-tip { display: none; }
-.maplibregl-ctrl-attrib { font-family: var(--font-anthropic-sans); }
-@media (prefers-color-scheme: dark) {
-  .maplibregl-ctrl-group { background: #1B2633; }
-  .maplibregl-ctrl-group button + button { border-top-color: #2E3B4B; }
-  .maplibregl-ctrl button .maplibregl-ctrl-icon { filter: invert(1); }
-  .maplibregl-ctrl-attrib, .maplibregl-ctrl-attrib.maplibregl-compact { background: rgba(27, 38, 51, .88); color: #A3ADBA; }
-  .maplibregl-ctrl-attrib a { color: #C9D3DF; }
-}
-.ovh-footer { border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-lg); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: flex; flex-direction: column; gap: 4px; }
-</style>
-<style>
-.ovh { --ovh-blue: #4377BC; --ovh-navy: #1E3A63; --ovh-orange: #E3913F; --ovh-teal: #2A9D8F; --ovh-light: #9DB9E0; --ovh-gray: #A9B8CC; font-family: var(--font-anthropic-sans); color: var(--color-fg); display: flex; flex-direction: column; gap: var(--cds-gap-xl); }
-.ovh p { margin: 0; }
-.ovh-head { display: flex; flex-direction: column; gap: var(--cds-gap-sm); }
-.ovh-kicker { color: var(--ovh-blue); font-size: var(--cds-font-size-caption); font-weight: var(--cds-font-weight-medium); letter-spacing: .04em; text-transform: uppercase; }
-.ovh-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.2; margin: 0; }
-.ovh-lede { font-size: var(--cds-font-size-body); line-height: 1.55; max-width: 76ch; }
-.ovh-lede b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; }
-.ovh-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: var(--cds-gap-md); }
-.ovh [data-draw='shf-chart'] { min-height: 280px; }
-.ovh [data-draw='fin-chart'] { min-height: 290px; }
-.ovh [data-draw='oferta-chart'] { min-height: 270px; }
-.ovh [data-draw='inv-chart'] { min-height: 240px; }
-.ovh [data-draw='ingreso-chart'] { min-height: 216px; }
-.ovh [data-draw='pcu-chart'] { min-height: 126px; }
-.ovh [data-draw='ageb-chart'] { min-height: 186px; }
-.ovh [data-draw='ageb-mapa'] { min-height: 420px; }
-.ovh-ageb { stroke: var(--color-bg); stroke-width: 0.6; }
-.ovh-ageb.ovh-ageb-nd { stroke: var(--color-border-line); }
-.ovh-ageb-top { fill: none; stroke: var(--color-fg); stroke-width: 2; pointer-events: none; }
-.ovh-ageb-hl { fill: var(--color-fg); fill-opacity: 0.18; stroke: var(--color-fg); stroke-width: 2.5; pointer-events: none; }
-.ovh-map-labels { pointer-events: none; }
-.ovh-map-labels circle { fill: var(--color-fg); stroke: var(--color-bg); stroke-width: 1.5; }
-.ovh-map-labels text { fill: var(--color-bg); font-size: 11px; font-weight: 600; font-family: var(--font-anthropic-sans); }
-.ovh-ageb-foco { fill: none; stroke: var(--ovh-orange); stroke-width: 3.5; pointer-events: none; }
-.ovh-ageb { cursor: pointer; }
-.ovh [data-draw='ageb-tabla'] tr { cursor: pointer; }
-.ovh-btn { font: inherit; font-size: var(--cds-font-size-caption); background: transparent; color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 12px; cursor: pointer; }
-.ovh-btn:disabled { color: var(--color-fg-muted); cursor: default; opacity: 0.6; }
-.ovh-sw-empty { background: transparent; border: 1px solid var(--color-border-line); }
-.ovh-sw-rank { width: 16px; height: 16px; border-radius: 50%; background: var(--color-fg); color: var(--color-bg); font-size: 10px; font-style: normal; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
-.ovh-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-top: 3px solid var(--ovh-blue); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); min-width: 0; }
-.ovh-card-t { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); margin: 0; }
-.ovh-big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.15; font-variant-numeric: tabular-nums; }
-.ovh-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.45; }
-.ovh-sub span, .ovh-note span, .ovh-note b { font-variant-numeric: tabular-nums; }
-.ovh-ok { color: var(--color-ok); }
-.ovh-warn { color: var(--color-warn); }
-.ovh-sec { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
-.ovh-sec > h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; padding-left: var(--cds-pad-sm); border-left: 4px solid var(--ovh-blue); }
-.ovh-h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: 0; }
-.ovh-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.5; max-width: 82ch; }
-.ovh-text { font-size: var(--cds-font-size-body); line-height: 1.5; max-width: 80ch; }
-.ovh-text b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; }
-.ovh-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: var(--cds-gap-lg); }
-.ovh-panel { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
-.ovh-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--cds-gap-sm); }
-.ovh-chart { position: relative; min-height: 260px; }
-.ovh-svg { display: block; overflow: visible; }
-.ovh-axis text { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); font-family: var(--font-anthropic-sans); }
-.ovh-labels text { fill: var(--color-fg); }
-.ovh-grid line { stroke: var(--cds-chart-grid); }
-.ovh-baseline { stroke: var(--cds-chart-axis); }
-.ovh-ref { stroke: var(--cds-chart-reference); stroke-dasharray: 3 3; }
-.ovh-rule { stroke: var(--cds-chart-axis); }
-.ovh-ends text, .ovh-vals text { font-size: var(--cds-font-size-caption); font-family: var(--font-anthropic-sans); font-variant-numeric: tabular-nums; }
-.ovh-vals text { fill: var(--color-fg); }
-.ovh-tip { position: absolute; z-index: 3; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: var(--cds-pad-sm) var(--cds-pad-md); font-size: var(--cds-font-size-caption); min-width: 150px; }
-.ovh-tip[hidden] { display: none; }
-.ovh-tip-t { font-weight: var(--cds-font-weight-medium); margin-bottom: 4px; }
-.ovh-tip-r { display: flex; align-items: center; gap: 6px; line-height: 1.6; }
-.ovh-tip-r i { width: 8px; height: 8px; border-radius: 2px; flex: none; }
-.ovh-tip-r span { color: var(--cds-text-secondary); flex: 1; }
-.ovh-tip-r b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; }
-.ovh-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs) var(--cds-gap-md); list-style: none; margin: 0; padding: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
-.ovh-legend li { display: flex; align-items: center; gap: 6px; }
-.ovh-sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: none; }
-.ovh-sw.ovh-ln { height: 3px; border-radius: 2px; }
-.ovh-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; }
-.ovh-seg button { font: inherit; font-size: var(--cds-font-size-caption); background: transparent; color: var(--color-fg); border: 0; padding: 6px 12px; cursor: pointer; }
-.ovh-seg button[aria-pressed='true'] { background: var(--ovh-blue); color: #fff; }
-.ovh-tablewrap { overflow-x: auto; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
-.ovh-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
-.ovh-table th { background: var(--ovh-blue); color: #fff; text-align: left; font-weight: var(--cds-font-weight-medium); padding: 8px 10px; white-space: nowrap; }
-.ovh-table td { padding: 8px 10px; border-top: 1px solid var(--color-border-line); vertical-align: top; }
-.ovh-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--ovh-blue) 7%, transparent); }
-.ovh-table .ovh-num { text-align: right; white-space: nowrap; }
-.ovh-table.ovh-wide { min-width: 860px; }
-.ovh-muted { color: var(--color-fg-muted); }
-.ovh-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95em; white-space: nowrap; }
-.ovh-ind { min-width: 220px; font-weight: var(--cds-font-weight-medium); }
-.ovh-def { display: block; margin-top: 2px; font-weight: 400; color: var(--color-fg-muted); }
-.ovh-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; white-space: nowrap; font-weight: var(--cds-font-weight-medium); }
-.ovh-b1 { background: var(--ovh-blue); color: #fff; }
-.ovh-b2 { background: var(--ovh-light); color: #13294B; }
-.ovh-b3 { background: var(--ovh-orange); color: #2B1600; }
-.ovh-b4 { background: var(--ovh-gray); color: #1B2433; }
-.ovh-chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: var(--cds-gap-sm); }
-.ovh-chip { border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); background: var(--color-panel); display: flex; flex-direction: column; gap: 6px; }
-.ovh-chip .ovh-big { font-size: var(--cds-font-size-heading); }
-.ovh-chip .ovh-badge { white-space: normal; align-self: flex-start; }
-.ovh-filters { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); }
-.ovh-error { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: var(--cds-pad-md) 0; }
-.ovh-defs { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: var(--cds-font-size-caption); margin: 0; }
-.ovh-defs dt { font-weight: var(--cds-font-weight-medium); }
-.ovh-defs dd { margin: 0; color: var(--color-fg-muted); }
-.ovh-details { border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-md); }
-.ovh-details summary { cursor: pointer; font-weight: var(--cds-font-weight-medium); }
-.ovh-details dl { display: flex; flex-direction: column; gap: 10px; margin: var(--cds-gap-md) 0 0; font-size: var(--cds-font-size-caption); max-width: 90ch; }
-.ovh-details dt { font-weight: var(--cds-font-weight-medium); }
-.ovh-details dd { margin: 2px 0 0; color: var(--color-fg-muted); line-height: 1.5; }
-</style>
+<link rel='stylesheet' href='css/tablero.css'>
+<link rel='stylesheet' href='css/observatorio.css'>
 </head>
-<body>
+<body class='hcv-sitio'>
+<a class='hcv-saltar' href='#contenido'>Saltar al contenido</a>
+<header class='hcv-cabecera'>
+  <div class='hcv-contenedor hcv-cabecera__barra'>
+    <a class='hcv-cabecera__marca' href='./'>Hermosillo ¿Cómo Vamos?<span class='ovh-marca-sub'>Observatorio de Vivienda</span></a>
+    <button type='button' class='hcv-boton hcv-boton--terciario hcv-boton--chico hcv-cabecera__menu' aria-expanded='false' aria-controls='nav-principal'><span class='hcv-icono-abrir'>Menú</span><span class='hcv-icono-cerrar'>Cerrar</span></button>
+    <nav class='hcv-nav' id='nav-principal' aria-label='Secciones del tablero'>
+      <ul>
+          <li><a href='#precios'>Precios</a></li>
+          <li><a href='#financiamiento'>Financiamiento</a></li>
+          <li><a href='#oferta'>Oferta</a></li>
+          <li><a href='#territorio'>Territorio</a></li>
+          <li><a href='#habitabilidad'>Habitabilidad</a></li>
+          <li><a href='#propuesta'>Propuesta</a></li>
+          <li><a href='#fuentes'>Datos</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id='contenido' class='hcv-tablero' tabindex='-1'>
+  <div class='hcv-contenedor'>
 <div id='dash-root'>
 <div class='ovh'>
-  <header class='ovh-head' id='encabezado'>
-    <p class='ovh-kicker'>Observatorio de Vivienda de Hermosillo · Propuesta de indicadores</p>
-    <h1 class='ovh-title'>Vivienda en Hermosillo: línea base del observatorio</h1>
-    <p class='ovh-lede' data-read lang='es-MX'>Al <span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span>, el precio de la vivienda en Hermosillo <span data-draw='lede-verbo' class='dash-skeleton'>—</span> <b data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Hermosillo' data-fmt='apct1' class='dash-skeleton'>—</b> anual, <span data-draw='lede-comp' class='dash-skeleton'>—</span> <b data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Nacional' data-fmt='apct1' class='dash-skeleton'>—</b> nacional. En <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> se otorgaron <b data-draw='v' data-source='kpi_fin' data-field='total' data-row='0' class='dash-skeleton'>—</b> créditos para vivienda en el municipio, y el inventario de vivienda nueva sumó <b data-draw='v' data-source='kpi_inv' data-field='viviendas' data-row='0' class='dash-skeleton'>—</b> viviendas en <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span>.</p>
+  <header class='ovh-cab' id='encabezado'>
+    <p class='ovh-etiqueta'>Observatorio · Vivienda</p>
+    <h1 class='ovh-titulo'>¿Cómo vamos con la vivienda en Hermosillo?</h1>
+    <p class='ovh-actualizado'>Datos al <span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span> en precios y a <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span> en créditos y vivienda nueva · <a href='#notas'>Metodología</a></p>
+    <p class='ovh-entradilla' data-read lang='es-MX'>Al <span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span>, el precio de la vivienda en Hermosillo <span data-draw='lede-verbo' class='dash-skeleton'>—</span> <b data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Hermosillo' data-fmt='apct1' class='dash-skeleton'>—</b> anual, <span data-draw='lede-comp' class='dash-skeleton'>—</span> <b data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Nacional' data-fmt='apct1' class='dash-skeleton'>—</b> nacional. En <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> se otorgaron <b data-draw='v' data-source='kpi_fin' data-field='total' data-row='0' class='dash-skeleton'>—</b> créditos para vivienda en el municipio, y el inventario de vivienda nueva sumó <b data-draw='v' data-source='kpi_inv' data-field='viviendas' data-row='0' class='dash-skeleton'>—</b> viviendas en <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span>.</p>
   </header>
 
   <section class='ovh-kpis' id='indicadores-clave' aria-label='Indicadores clave'>
-    <article class='ovh-card' id='kpi-precio'>
-      <h3 class='ovh-card-t'>Precio de la vivienda (Índice SHF)</h3>
+    <article class='ovh-kpi' id='kpi-precio'>
+      <p class='ovh-etiqueta'>Precios · Registro</p>
+      <h3 class='ovh-kpi-nombre'>Variación anual del precio de la vivienda</h3>
       <p class='ovh-big'><span data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Hermosillo' data-fmt='spct1' class='dash-skeleton'>—</span></p>
-      <p class='ovh-sub'>Variación anual al <span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span> · nacional <span data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Nacional' data-fmt='spct1' class='dash-skeleton'>—</span></p>
+      <p class='ovh-cambio'>Promedio nacional: <span data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Nacional' data-fmt='spct1' class='dash-skeleton'>—</span></p>
+      <div class='ovh-spark dash-skeleton' data-draw='spark' data-source='shf' data-field='var_anual_pct' data-where='serie=Hermosillo' data-n='20' data-aria='Variación anual del precio en Hermosillo, últimos 20 trimestres'></div>
+      <p class='ovh-fuente'>Índice SHF, <span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span></p>
     </article>
-    <article class='ovh-card' id='kpi-creditos'>
-      <h3 class='ovh-card-t'>Créditos para vivienda, <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
+    <article class='ovh-kpi' id='kpi-creditos'>
+      <p class='ovh-etiqueta'>Financiamiento · Registro</p>
+      <h3 class='ovh-kpi-nombre'>Créditos para vivienda, <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
       <p class='ovh-big'><span data-draw='v' data-source='kpi_fin' data-field='total' data-row='0' class='dash-skeleton'>—</span></p>
-      <p class='ovh-sub'><span data-draw='v' data-source='kpi_fin' data-field='cambio_pct' data-row='0' data-fmt='spct1' data-tone='up' class='dash-skeleton'>—</span> frente a <span data-draw='v' data-source='kpi_fin' data-field='anio_prev' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> (<span data-draw='v' data-source='kpi_fin' data-field='total_prev' data-row='0' class='dash-skeleton'>—</span>)</p>
+      <p class='ovh-cambio'><span data-draw='v' data-source='kpi_fin' data-field='cambio_pct' data-row='0' data-fmt='spct1' class='dash-skeleton'>—</span> frente a <span data-draw='v' data-source='kpi_fin' data-field='anio_prev' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> (<span data-draw='v' data-source='kpi_fin' data-field='total_prev' data-row='0' class='dash-skeleton'>—</span>)</p>
+      <div class='ovh-spark dash-skeleton' data-draw='spark' data-source='fin_anual' data-field='total' data-completo='meses' data-aria='Créditos para vivienda por año'></div>
+      <p class='ovh-fuente'>SEDATU, SNIIV · años completos</p>
     </article>
-    <article class='ovh-card' id='kpi-registro'>
-      <h3 class='ovh-card-t'>Viviendas registradas en el RUV, <span data-draw='v' data-source='kpi_oferta' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
+    <article class='ovh-kpi' id='kpi-registro'>
+      <p class='ovh-etiqueta'>Oferta · Registro</p>
+      <h3 class='ovh-kpi-nombre'>Viviendas registradas en el RUV, <span data-draw='v' data-source='kpi_oferta' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
       <p class='ovh-big'><span data-draw='v' data-source='kpi_oferta' data-field='registro' data-row='0' class='dash-skeleton'>—</span></p>
-      <p class='ovh-sub'><span data-draw='v' data-source='kpi_oferta' data-field='cambio_pct' data-row='0' data-fmt='spct1' data-tone='up' class='dash-skeleton'>—</span> frente a <span data-draw='v' data-source='kpi_oferta' data-field='anio_prev' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> (<span data-draw='v' data-source='kpi_oferta' data-field='registro_prev' data-row='0' class='dash-skeleton'>—</span>)</p>
+      <p class='ovh-cambio'><span data-draw='v' data-source='kpi_oferta' data-field='cambio_pct' data-row='0' data-fmt='spct1' class='dash-skeleton'>—</span> frente a <span data-draw='v' data-source='kpi_oferta' data-field='anio_prev' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> (<span data-draw='v' data-source='kpi_oferta' data-field='registro_prev' data-row='0' class='dash-skeleton'>—</span>)</p>
+      <div class='ovh-spark dash-skeleton' data-draw='spark' data-source='oferta_anual' data-field='registro' data-completo='meses' data-aria='Viviendas registradas por año'></div>
+      <p class='ovh-fuente'>SEDATU, SNIIV (RUV) · años completos</p>
     </article>
-    <article class='ovh-card' id='kpi-inventario'>
-      <h3 class='ovh-card-t'>Inventario de vivienda nueva</h3>
+    <article class='ovh-kpi' id='kpi-inventario'>
+      <p class='ovh-etiqueta'>Oferta · Registro</p>
+      <h3 class='ovh-kpi-nombre'>Inventario de vivienda nueva</h3>
       <p class='ovh-big'><span data-draw='v' data-source='kpi_inv' data-field='viviendas' data-row='0' class='dash-skeleton'>—</span></p>
-      <p class='ovh-sub'>Al cierre de <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span> · <span data-draw='v' data-source='kpi_inv' data-field='cambio_pct' data-row='0' data-fmt='spct1' class='dash-skeleton'>—</span> frente a <span data-draw='v' data-source='kpi_inv' data-field='prev_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span></p>
+      <p class='ovh-cambio'><span data-draw='v' data-source='kpi_inv' data-field='cambio_pct' data-row='0' data-fmt='spct1' class='dash-skeleton'>—</span> frente a <span data-draw='v' data-source='kpi_inv' data-field='prev_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span></p>
+      <div class='ovh-spark dash-skeleton' data-draw='spark' data-source='inv_mensual' data-field='viviendas' data-n='36' data-aria='Inventario de vivienda nueva, últimos 36 meses'></div>
+      <p class='ovh-fuente'>SEDATU, SNIIV (RUV), <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span></p>
     </article>
-    <article class='ovh-card' id='kpi-deshabitada'>
-      <h3 class='ovh-card-t'>Vivienda deshabitada, Censo 2020</h3>
+    <article class='ovh-kpi' id='kpi-deshabitada'>
+      <p class='ovh-etiqueta'>Parque habitacional · Registro</p>
+      <h3 class='ovh-kpi-nombre'>Viviendas particulares deshabitadas</h3>
       <p class='ovh-big'><span data-draw='v' data-source='habitabilidad' data-field='pct' data-where='clave=deshabitadas' data-fmt='pct1' class='dash-skeleton'>—</span></p>
-      <p class='ovh-sub'><span data-draw='v' data-source='habitabilidad' data-field='viviendas' data-where='clave=deshabitadas' class='dash-skeleton'>—</span> de <span data-draw='v' data-source='habitabilidad' data-field='base' data-where='clave=deshabitadas' class='dash-skeleton'>—</span> viviendas particulares</p>
+      <p class='ovh-cambio'><span data-draw='v' data-source='habitabilidad' data-field='viviendas' data-where='clave=deshabitadas' class='dash-skeleton'>—</span> de <span data-draw='v' data-source='habitabilidad' data-field='base' data-where='clave=deshabitadas' class='dash-skeleton'>—</span> viviendas particulares</p>
+      <p class='ovh-fuente'>INEGI, Censo de Población y Vivienda 2020</p>
     </article>
-    <article class='ovh-card' id='kpi-poblacion'>
-      <h3 class='ovh-card-t'>Población, Censo 2020</h3>
+    <article class='ovh-kpi' id='kpi-poblacion'>
+      <p class='ovh-etiqueta'>Población · Registro</p>
+      <h3 class='ovh-kpi-nombre'>Habitantes del municipio</h3>
       <p class='ovh-big'><span data-draw='v' data-source='censo' data-field='POBTOT' data-where='NIVEL=municipio' class='dash-skeleton'>—</span></p>
-      <p class='ovh-sub'><span data-draw='v' data-source='censo' data-field='TOTHOG' data-where='NIVEL=municipio' class='dash-skeleton'>—</span> hogares · <span data-draw='v' data-source='censo' data-field='PROM_OCUP' data-where='NIVEL=municipio' data-fmt='dec2' class='dash-skeleton'>—</span> ocupantes por vivienda</p>
+      <p class='ovh-cambio'><span data-draw='v' data-source='censo' data-field='TOTHOG' data-where='NIVEL=municipio' class='dash-skeleton'>—</span> hogares · <span data-draw='v' data-source='censo' data-field='PROM_OCUP' data-where='NIVEL=municipio' data-fmt='dec2' class='dash-skeleton'>—</span> ocupantes por vivienda</p>
+      <p class='ovh-fuente'>INEGI, Censo de Población y Vivienda 2020</p>
     </article>
   </section>
 
   <section class='ovh-sec' id='precios'>
     <h2>Precios de la vivienda</h2>
-    <p class='ovh-note'>El Índice SHF mide el precio de viviendas compradas con crédito hipotecario garantizado, a partir de avalúos (base 2017 = 100). No incluye operaciones de contado ni rentas.</p>
     <div class='ovh-panel' id='precios-grafica'>
       <div class='ovh-row'>
         <div>
-          <h3 class='ovh-h3' data-shf-sub='var'>Variación anual del Índice SHF, %</h3>
-          <h3 class='ovh-h3' data-shf-sub='indice' hidden>Índice SHF de precios, 2017 = 100</h3>
+          <p class='ovh-etiqueta'>Registro · Precios</p>
+          <h3 class='ovh-h3'>El precio de la vivienda en Hermosillo <span data-draw='lede-verbo' class='dash-skeleton'>—</span> <b data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Hermosillo' data-fmt='apct1' class='dash-skeleton'>—</b> en un año, <span data-draw='lede-comp' class='dash-skeleton'>—</span> promedio nacional</h3>
+          <p class='ovh-sub' data-shf-sub='var'>Variación anual del Índice SHF de precios de la vivienda, %, por trimestre</p>
+          <p class='ovh-sub' data-shf-sub='indice' hidden>Índice SHF de precios de la vivienda, 2017 = 100, por trimestre</p>
         </div>
         <div class='ovh-seg' role='group' aria-label='Medida'>
           <button type='button' data-modo='var' aria-pressed='true'>Variación anual</button>
@@ -219,136 +114,165 @@ span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
         </div>
       </div>
       <ul class='ovh-legend'>
-        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-blue)'></i><span data-serie='Hermosillo'>Hermosillo</span></li>
-        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-light)'></i><span data-serie='Sonora'>Sonora</span></li>
-        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-orange)'></i><span data-serie='Nacional'>Nacional</span></li>
+        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c1)'></i><span data-serie='Hermosillo'>Hermosillo</span></li>
+        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c2)'></i><span data-serie='Nacional'>Nacional</span></li>
+        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c3)'></i><span data-serie='Sonora'>Sonora</span></li>
       </ul>
       <div class='ovh-chart dash-skeleton' data-draw='shf-chart' data-source='shf'></div>
       <p class='ovh-text'>A cinco años (<span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span>), el índice de Hermosillo acumula <b data-draw='v' data-source='shf_ultimo' data-field='var_5a_pct' data-where='serie=Hermosillo' data-fmt='spct1' class='dash-skeleton'>—</b>, frente a <b data-draw='v' data-source='shf_ultimo' data-field='var_5a_pct' data-where='serie=Nacional' data-fmt='spct1' class='dash-skeleton'>—</b> nacional y <b data-draw='v' data-source='shf_ultimo' data-field='var_5a_pct' data-where='serie=Sonora' data-fmt='spct1' class='dash-skeleton'>—</b> en Sonora.</p>
+      <div class='ovh-pie'><p class='ovh-fuente'>Fuente: SHF, Índice SHF de Precios de la Vivienda, 1T-2005 a <span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span>. Nota: solo viviendas con crédito hipotecario garantizado; no incluye operaciones de contado ni rentas.</p><a class='ovh-solo-sitio ovh-enlace' href='data/indice_precios_vivienda_hermosillo.csv' download>CSV</a></div>
     </div>
   </section>
 
   <section class='ovh-sec' id='financiamiento'>
     <h2>Financiamiento para vivienda</h2>
-    <div class='ovh-panel' id='creditos-organismo'>
-      <h3 class='ovh-h3'>Créditos otorgados por año y organismo</h3>
-      <ul class='ovh-legend'>
-        <li><i class='ovh-sw' style='background: var(--ovh-blue)'></i><span data-serie='Infonavit'>Infonavit</span></li>
-        <li><i class='ovh-sw' style='background: var(--ovh-navy)'></i><span data-serie='Banca'>Banca</span></li>
-        <li><i class='ovh-sw' style='background: var(--ovh-orange)'></i><span data-serie='CONAVI'>CONAVI</span></li>
-        <li><i class='ovh-sw' style='background: var(--ovh-teal)'></i><span data-serie='Fovissste'>Fovissste</span></li>
-        <li><i class='ovh-sw' style='background: var(--ovh-gray)'></i><span data-serie='Otros'>Otros organismos</span></li>
-      </ul>
-      <div class='ovh-chart dash-skeleton' data-draw='fin-chart' data-source='fin_anual'></div>
-      <p class='ovh-note'>Incluye todos los destinos: compra de vivienda nueva y existente, mejoramientos, autoproducción y otros. La barra clara de <span data-draw='v' data-source='kpi_fin' data-field='anio_parcial' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> suma solo <span data-draw='v' data-source='kpi_fin' data-field='meses_parcial' data-row='0' class='dash-skeleton'>—</span> meses.</p>
-    </div>
-    <div class='ovh-two'>
+    <div class='ovh-rejilla'>
+      <div class='ovh-panel ovh-ancho' id='creditos-organismo'>
+        <p class='ovh-etiqueta'>Registro · Financiamiento</p>
+        <h3 class='ovh-h3'>Infonavit otorgó <b data-draw='v' data-source='fin_organismo' data-field='pct' data-where='grupo=Infonavit' data-fmt='pct1' class='dash-skeleton'>—</b> de los créditos para vivienda en <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
+        <p class='ovh-sub'>Créditos para vivienda otorgados en el municipio por año y organismo, número de acciones, todos los destinos</p>
+        <ul class='ovh-legend'>
+          <li><i class='ovh-sw' style='background: var(--ovh-c1)'></i><span data-serie='Infonavit'>Infonavit</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-c2)'></i><span data-serie='Banca'>Banca</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-c3)'></i><span data-serie='CONAVI'>CONAVI</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-c4)'></i><span data-serie='Fovissste'>Fovissste</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-c5)'></i><span data-serie='Otros'>Otros organismos</span></li>
+        </ul>
+        <div class='ovh-chart dash-skeleton' data-draw='fin-chart' data-source='fin_anual'></div>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: SEDATU, SNIIV, financiamiento, enero 2013 a <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span>. Nota: la barra atenuada de <span data-draw='v' data-source='kpi_fin' data-field='anio_parcial' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> suma solo <span data-draw='v' data-source='kpi_fin' data-field='meses_parcial' data-row='0' class='dash-skeleton'>—</span> meses.</p><a class='ovh-solo-sitio ovh-enlace' href='data/financiamiento_mensual.csv' download>CSV</a></div>
+      </div>
       <div class='ovh-panel' id='creditos-ingreso'>
-        <h3 class='ovh-h3'>Créditos por ingreso del acreditado (veces UMA), <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
-        <div class='ovh-chart ovh-short dash-skeleton' data-draw='ingreso-chart' data-source='ingreso'></div>
-        <p class='ovh-text'><b data-draw='v' data-source='ingreso_bajo' data-field='pct' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de los créditos (<span data-draw='v' data-source='ingreso_bajo' data-field='acciones' data-row='0' class='dash-skeleton'>—</span>) fueron para personas con ingreso de hasta 4 UMA, en naranja.</p>
+        <p class='ovh-etiqueta'>Registro · Financiamiento</p>
+        <h3 class='ovh-h3'><b data-draw='v' data-source='ingreso_bajo' data-field='pct' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de los créditos de <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> fue para personas con ingreso de hasta 4 UMA</h3>
+        <p class='ovh-sub'>Créditos por rango de ingreso del acreditado, en veces la UMA; se destacan los rangos de hasta 4 UMA (<span data-draw='v' data-source='ingreso_bajo' data-field='acciones' data-row='0' class='dash-skeleton'>—</span> créditos)</p>
+        <div class='ovh-chart dash-skeleton' data-draw='ingreso-chart' data-source='ingreso'></div>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: SEDATU, SNIIV, perfil de los créditos. Nota: UMA es la Unidad de Medida y Actualización.</p><a class='ovh-solo-sitio ovh-enlace' href='data/financiamiento_perfil_anual.csv' download>CSV</a></div>
       </div>
       <div class='ovh-panel' id='creditos-monto'>
-        <h3 class='ovh-h3'>Créditos y monto promedio por organismo, <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
+        <p class='ovh-etiqueta'>Registro · Financiamiento</p>
+        <h3 class='ovh-h3'>Un crédito bancario promedio para comprar vivienda equivale a <b data-draw='v' data-source='monto_ratio' data-field='veces' data-row='0' data-fmt='dec1' class='dash-skeleton'>—</b> veces uno de Infonavit</h3>
+        <p class='ovh-sub'>Créditos, participación y monto promedio de los créditos para vivienda nueva y existente, pesos corrientes, <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></p>
         <div class='ovh-tablewrap'>
           <table class='ovh-table' data-source='fin_organismo' data-row-key='grupo'>
-            <thead><tr><th data-field='grupo'>Organismo</th><th data-field='acciones' class='ovh-num'>Créditos</th><th data-field='pct' class='ovh-num'>Participación</th><th data-field='monto_prom_adq' class='ovh-num'>Monto promedio de compra</th></tr></thead>
+            <thead><tr><th data-field='grupo'>Organismo</th><th data-field='acciones' class='n'>Créditos</th><th data-field='pct' class='n'>Participación</th><th data-field='monto_prom_adq' class='n'>Monto promedio de compra</th></tr></thead>
             <tbody data-draw='fin-tabla'></tbody>
           </table>
         </div>
-        <p class='ovh-note'>El monto promedio considera solo créditos para comprar vivienda nueva o existente, en pesos corrientes.</p>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: SEDATU, SNIIV, financiamiento.</p></div>
       </div>
     </div>
   </section>
 
   <section class='ovh-sec' id='oferta'>
     <h2>Oferta de vivienda nueva</h2>
-    <div class='ovh-panel' id='oferta-etapas'>
-      <h3 class='ovh-h3'>Viviendas por etapa del Registro Único de Vivienda, por año</h3>
-      <ul class='ovh-legend'>
-        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-blue)'></i><span data-serie='registro'>Registradas</span></li>
-        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-teal)'></i><span data-serie='verificacion'>En verificación de obra</span></li>
-        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-orange)'></i><span data-serie='produccion'>Terminadas</span></li>
-      </ul>
-      <div class='ovh-chart dash-skeleton' data-draw='oferta-chart' data-source='oferta_anual'></div>
-      <p class='ovh-note'>El tramo punteado es <span data-draw='v' data-source='kpi_oferta' data-field='anio_parcial' data-row='0' data-fmt='year' class='dash-skeleton'>—</span>, con <span data-draw='v' data-source='kpi_oferta' data-field='meses_parcial' data-row='0' class='dash-skeleton'>—</span> meses de datos. <b data-draw='v' data-source='kpi_oferta' data-field='vertical_pct' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de lo registrado en <span data-draw='v' data-source='kpi_oferta' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> fue vivienda vertical (<span data-draw='v' data-source='kpi_oferta' data-field='vertical' data-row='0' class='dash-skeleton'>—</span> viviendas).</p>
-    </div>
-    <div class='ovh-two'>
+    <div class='ovh-rejilla'>
+      <div class='ovh-panel ovh-ancho' id='oferta-etapas'>
+        <p class='ovh-etiqueta'>Registro · Oferta</p>
+        <h3 class='ovh-h3'>El registro de vivienda nueva cambió <b data-draw='v' data-source='kpi_oferta' data-field='cambio_pct' data-row='0' data-fmt='spct1' class='dash-skeleton'>—</b> en <span data-draw='v' data-source='kpi_oferta' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> frente a <span data-draw='v' data-source='kpi_oferta' data-field='anio_prev' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
+        <p class='ovh-sub'>Viviendas por etapa del Registro Único de Vivienda, por año</p>
+        <ul class='ovh-legend'>
+          <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c1)'></i><span data-serie='registro'>Registradas</span></li>
+          <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c2)'></i><span data-serie='verificacion'>En verificación de obra</span></li>
+          <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c3)'></i><span data-serie='produccion'>Terminadas</span></li>
+        </ul>
+        <div class='ovh-chart dash-skeleton' data-draw='oferta-chart' data-source='oferta_anual'></div>
+        <p class='ovh-text'><b data-draw='v' data-source='kpi_oferta' data-field='vertical_pct' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de lo registrado en <span data-draw='v' data-source='kpi_oferta' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> fue vivienda vertical (<span data-draw='v' data-source='kpi_oferta' data-field='vertical' data-row='0' class='dash-skeleton'>—</span> viviendas).</p>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: SEDATU, SNIIV (RUV). Nota: el tramo punteado es <span data-draw='v' data-source='kpi_oferta' data-field='anio_parcial' data-row='0' data-fmt='year' class='dash-skeleton'>—</span>, con <span data-draw='v' data-source='kpi_oferta' data-field='meses_parcial' data-row='0' class='dash-skeleton'>—</span> meses de datos.</p><a class='ovh-solo-sitio ovh-enlace' href='data/oferta_mensual.csv' download>CSV</a></div>
+      </div>
       <div class='ovh-panel' id='oferta-pcu'>
-        <h3 class='ovh-h3'>Registro por perímetro de contención urbana, <span data-draw='v' data-source='kpi_oferta' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span></h3>
-        <div class='ovh-chart ovh-short dash-skeleton' data-draw='pcu-chart' data-source='registro_pcu'></div>
+        <p class='ovh-etiqueta'>Registro · Oferta</p>
+        <h3 class='ovh-h3'><b data-draw='v' data-source='registro_pcu' data-field='pct' data-where='pcu=U3' data-fmt='pct1' class='dash-skeleton'>—</b> de la vivienda registrada en <span data-draw='v' data-source='kpi_oferta' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> está en la franja periférica (U3)</h3>
+        <p class='ovh-sub'>Viviendas registradas por perímetro de contención urbana, número y %</p>
+        <div class='ovh-chart dash-skeleton' data-draw='pcu-chart' data-source='registro_pcu'></div>
         <dl class='ovh-defs'>
           <dt>U1</dt><dd>Zona urbana consolidada con fuentes de empleo.</dd>
           <dt>U2</dt><dd>Zona en consolidación con agua y drenaje.</dd>
           <dt>U3</dt><dd>Franja periférica contigua al área urbana.</dd>
-          <dt>FC</dt><dd>Fuera de los perímetros de contención, en naranja.</dd>
+          <dt>FC</dt><dd>Fuera de los perímetros de contención.</dd>
         </dl>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: SEDATU, SNIIV (RUV); perímetros de SEDATU-CONAVI.</p></div>
       </div>
       <div class='ovh-panel' id='oferta-inventario'>
-        <h3 class='ovh-h3'>Inventario de vivienda nueva al cierre de cada mes</h3>
+        <p class='ovh-etiqueta'>Registro · Oferta</p>
+        <h3 class='ovh-h3'>El inventario de vivienda nueva llegó a <b data-draw='v' data-source='kpi_inv' data-field='viviendas' data-row='0' class='dash-skeleton'>—</b> viviendas en <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span></h3>
+        <p class='ovh-sub'>Viviendas registradas en el RUV que siguen sin venderse, al cierre de cada mes</p>
         <ul class='ovh-legend'>
-          <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-blue)'></i><span data-serie='inventario'>Viviendas en inventario</span></li>
+          <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c1)'></i><span data-serie='inventario'>Viviendas en inventario</span></li>
         </ul>
         <div class='ovh-chart dash-skeleton' data-draw='inv-chart' data-source='inv_mensual'></div>
-        <p class='ovh-note'>Viviendas registradas en el RUV que siguen sin venderse, en cualquier etapa de obra.</p>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: SEDATU, SNIIV (RUV), enero 2014 a <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span>.</p><a class='ovh-solo-sitio ovh-enlace' href='data/inventario_mensual.csv' download>CSV</a></div>
       </div>
     </div>
   </section>
 
   <section class='ovh-sec' id='territorio'>
     <h2>Vivienda deshabitada por AGEB</h2>
-    <p class='ovh-text'><b data-draw='v' data-source='ageb_resumen' data-field='agebs_20' data-row='0' class='dash-skeleton'>—</b> de <span data-draw='v' data-source='ageb_resumen' data-field='agebs' data-row='0' class='dash-skeleton'>—</span> AGEB urbanas tenían 20% o más de sus viviendas particulares deshabitadas en 2020, y concentraban <b data-draw='v' data-source='ageb_resumen' data-field='pct_20' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de las deshabitadas.</p>
-    <div class='ovh-two'>
+    <div class='ovh-rejilla'>
       <div class='ovh-panel' id='ageb-distribucion'>
-        <h3 class='ovh-h3'>AGEB urbanas por porcentaje de vivienda deshabitada</h3>
+        <p class='ovh-etiqueta'>Registro · Territorio</p>
+        <h3 class='ovh-h3'><b data-draw='v' data-source='ageb_resumen' data-field='agebs_20' data-row='0' class='dash-skeleton'>—</b> AGEB urbanas tenían 20% o más de sus viviendas deshabitadas</h3>
+        <p class='ovh-sub'>AGEB urbanas por porcentaje de viviendas particulares deshabitadas, 2020</p>
         <ul class='ovh-legend'>
-          <li><i class='ovh-sw' style='background: var(--ovh-blue)'></i><span>Menos de 20%</span></li>
-          <li><i class='ovh-sw' style='background: var(--ovh-orange)'></i><span>Vacancia alta, 20% o más</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-1)'></i><span>Menos de 10%</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-2)'></i><span>10–15%</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-3)'></i><span>15–20%</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-4)'></i><span>20–30%</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-5)'></i><span>30% o más</span></li>
         </ul>
-        <div class='ovh-chart ovh-short dash-skeleton' data-draw='ageb-chart' data-source='ageb_vacancia'></div>
-        <p class='ovh-note'>Se excluyen AGEB con menos de 20 viviendas particulares o con datos reservados por INEGI.</p>
+        <div class='ovh-chart dash-skeleton' data-draw='ageb-chart' data-source='ageb_vacancia'></div>
+        <p class='ovh-text'>Son <span data-draw='v' data-source='ageb_resumen' data-field='agebs_20' data-row='0' class='dash-skeleton'>—</span> de <span data-draw='v' data-source='ageb_resumen' data-field='agebs' data-row='0' class='dash-skeleton'>—</span> AGEB y concentran <b data-draw='v' data-source='ageb_resumen' data-field='pct_20' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de las viviendas deshabitadas en AGEB urbanas.</p>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: INEGI, Censo de Población y Vivienda 2020. Nota: se excluyen AGEB con menos de 20 viviendas particulares o con datos reservados.</p><a class='ovh-solo-sitio ovh-enlace' href='data/hermosillo_ageb.csv' download>CSV</a></div>
       </div>
       <div class='ovh-panel' id='ageb-top'>
-        <h3 class='ovh-h3'>Las 10 AGEB con más viviendas deshabitadas</h3>
+        <p class='ovh-etiqueta'>Registro · Territorio</p>
+        <h3 class='ovh-h3'>Las 10 AGEB con más viviendas deshabitadas suman <b data-draw='v' data-source='ageb_top_resumen' data-field='deshabitadas' data-row='0' class='dash-skeleton'>—</b></h3>
+        <p class='ovh-sub'>Viviendas particulares y deshabitadas por AGEB urbana, 2020</p>
         <div class='ovh-tablewrap'>
           <table class='ovh-table' data-source='ageb_top' data-row-key='CVEGEO'>
-            <thead><tr><th class='ovh-num'>#</th><th data-field='AGEB'>AGEB</th><th data-field='CVEGEO'>Clave geoestadística</th><th data-field='TVIVPAR' class='ovh-num'>Particulares</th><th data-field='VIVPAR_DES' class='ovh-num'>Deshabitadas</th><th data-field='des_pct' class='ovh-num'>%</th></tr></thead>
+            <thead><tr><th class='n'>#</th><th data-field='AGEB'>AGEB</th><th data-field='CVEGEO'>Clave geoestadística</th><th data-field='TVIVPAR' class='n'>Particulares</th><th data-field='VIVPAR_DES' class='n'>Deshabitadas</th><th data-field='des_pct' class='n'>%</th></tr></thead>
             <tbody data-draw='ageb-tabla'></tbody>
           </table>
         </div>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: INEGI, Censo de Población y Vivienda 2020.</p></div>
       </div>
-    </div>
-    <div class='ovh-panel' id='ageb-mapa'>
-      <div class='ovh-row'>
-        <h3 class='ovh-h3'>Mapa: dónde están las 10 AGEB con más viviendas deshabitadas</h3>
-        <button type='button' class='ovh-btn' data-mapa-reset disabled>Ver toda la ciudad</button>
+      <div class='ovh-panel ovh-ancho' id='ageb-mapa'>
+        <div class='ovh-row'>
+          <div>
+            <p class='ovh-etiqueta'>Registro · Territorio</p>
+            <h3 class='ovh-h3'>Dónde están las 10 AGEB con más viviendas deshabitadas</h3>
+            <p class='ovh-sub'>AGEB urbanas de la ciudad de Hermosillo por porcentaje de viviendas particulares deshabitadas, 2020</p>
+          </div>
+          <button type='button' class='ovh-btn' data-mapa-reset disabled>Ver toda la ciudad</button>
+        </div>
+        <ul class='ovh-legend'>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-1)'></i><span>Menos de 10%</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-2)'></i><span>10–15%</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-3)'></i><span>15–20%</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-4)'></i><span>20–30%</span></li>
+          <li><i class='ovh-sw' style='background: var(--ovh-seq-5)'></i><span>30% o más</span></li>
+          <li><i class='ovh-sw ovh-sw-empty'></i><span>Sin dato</span></li>
+          <li><i class='ovh-sw ovh-sw-rank'>1</i><span>Lugar entre las 10 con más deshabitadas</span></li>
+        </ul>
+        <div class='ovh-chart dash-skeleton' data-draw='ageb-mapa' data-source='ageb_geo ageb_mapa ageb_top'></div>
+        <p class='ovh-text'>Representan <b data-draw='v' data-source='ageb_top_resumen' data-field='pct' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de las viviendas deshabitadas en AGEB urbanas. Pasa el cursor sobre una fila de la tabla para ubicar su AGEB, o haz clic en la fila o en el mapa para acercarte. En el mapa usa los botones + y −, Ctrl o ⌘ con la rueda del ratón, o dos dedos en el celular.</p>
+        <div class='ovh-pie'><p class='ovh-fuente'>Fuente: INEGI, Censo de Población y Vivienda 2020; límites del Marco Geoestadístico (diciembre de 2025); mapa base de OpenFreeMap con datos de OpenStreetMap. Nota: sin dato son AGEB creadas después de 2020, con menos de 20 viviendas particulares o con datos reservados; no incluye las otras localidades urbanas del municipio.</p><a class='ovh-solo-sitio ovh-enlace' href='data/ageb_geometria.json' download>Límites (JSON)</a></div>
       </div>
-      <ul class='ovh-legend'>
-        <li><i class='ovh-sw' style='background: #E6EEF8'></i><span>Menos de 5%</span></li>
-        <li><i class='ovh-sw' style='background: #BCD0EA'></i><span>5–10%</span></li>
-        <li><i class='ovh-sw' style='background: #8DB0DE'></i><span>10–15%</span></li>
-        <li><i class='ovh-sw' style='background: #4377BC'></i><span>15–20%</span></li>
-        <li><i class='ovh-sw' style='background: #F0B47C'></i><span>20–30%</span></li>
-        <li><i class='ovh-sw' style='background: #D9792A'></i><span>30% o más</span></li>
-        <li><i class='ovh-sw ovh-sw-empty'></i><span>Sin datos</span></li>
-        <li><i class='ovh-sw ovh-sw-rank'>1</i><span>Lugar entre las 10 con más deshabitadas</span></li>
-      </ul>
-      <div class='ovh-chart dash-skeleton' data-draw='ageb-mapa' data-source='ageb_geo ageb_mapa ageb_top'></div>
-      <p class='ovh-text'>Las 10 AGEB suman <b data-draw='v' data-source='ageb_top_resumen' data-field='deshabitadas' data-row='0' class='dash-skeleton'>—</b> viviendas deshabitadas, <b data-draw='v' data-source='ageb_top_resumen' data-field='pct' data-row='0' data-fmt='pct1' class='dash-skeleton'>—</b> de las deshabitadas en AGEB urbanas. Pasa el cursor sobre una fila de la tabla para ubicar su AGEB, o haz clic en la fila o en el mapa para acercarte.</p>
-      <p class='ovh-note'>Colores: porcentaje de viviendas particulares deshabitadas en 2020. Mapa base: OpenFreeMap, con datos de OpenStreetMap. Límites del Marco Geoestadístico de INEGI (diciembre de 2025) para la ciudad de Hermosillo; no incluye las otras localidades urbanas del municipio. Sin color: AGEB creadas después de 2020, con menos de 20 viviendas particulares o con datos reservados. Para acercar usa los botones + y −, Ctrl o ⌘ con la rueda del ratón, o dos dedos en el celular.</p>
     </div>
   </section>
 
   <section class='ovh-sec' id='habitabilidad'>
-    <h2>Ocupación y habitabilidad, Censo 2020</h2>
+    <h2>Ocupación y habitabilidad</h2>
     <div class='ovh-panel' id='habitabilidad-tabla'>
+      <p class='ovh-etiqueta'>Registro · Habitabilidad</p>
+      <h3 class='ovh-h3'><b data-draw='v' data-source='habitabilidad' data-field='pct' data-where='clave=servicios' data-fmt='pct1' class='dash-skeleton'>—</b> de las viviendas habitadas tiene agua entubada, drenaje y electricidad</h3>
+      <p class='ovh-sub'>Ocupación y características de las viviendas particulares del municipio, 2020</p>
       <div class='ovh-tablewrap'>
         <table class='ovh-table' data-source='habitabilidad' data-row-key='clave'>
-          <thead><tr><th data-field='indicador'>Indicador</th><th data-field='viviendas' class='ovh-num'>Viviendas</th><th data-field='pct' class='ovh-num'>Porcentaje</th><th data-field='base_texto'>Sobre viviendas</th></tr></thead>
+          <thead><tr><th data-field='indicador'>Indicador</th><th data-field='viviendas' class='n'>Viviendas</th><th data-field='pct' class='n'>Porcentaje</th><th data-field='base_texto'>Sobre viviendas</th></tr></thead>
           <tbody data-draw='hab-tabla'></tbody>
         </table>
       </div>
-      <p class='ovh-note'>Las características se calculan sobre viviendas particulares habitadas con información de características. Ocupantes por cuarto: <span data-draw='v' data-source='censo' data-field='PRO_OCUP_C' data-where='NIVEL=municipio' data-fmt='dec2' class='dash-skeleton'>—</span>.</p>
+      <div class='ovh-pie'><p class='ovh-fuente'>Fuente: INEGI, Censo de Población y Vivienda 2020. Nota: las características se calculan sobre viviendas particulares habitadas con información de características; ocupantes por cuarto: <span data-draw='v' data-source='censo' data-field='PRO_OCUP_C' data-where='NIVEL=municipio' data-fmt='dec2' class='dash-skeleton'>—</span>.</p></div>
     </div>
   </section>
 
@@ -356,14 +280,14 @@ span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
     <h2>Propuesta de indicadores</h2>
     <p class='ovh-text'>La propuesta reúne <b data-draw='v' data-source='propuesta_total' data-field='indicadores' data-row='0' class='dash-skeleton'>—</b> indicadores en <span data-draw='v' data-source='propuesta_total' data-field='dimensiones' data-row='0' class='dash-skeleton'>—</span> dimensiones. Los que están en este tablero salen de datos abiertos ya descargados; el resto marca la ruta para completarlo: fuentes abiertas por integrar, convenios con el Ayuntamiento y otras instituciones, e indicadores con metodología propia.</p>
     <div class='ovh-chips' id='propuesta-estados'>
-      <div class='ovh-chip'><span class='ovh-badge ovh-b1'>En este tablero</span><span class='ovh-big' data-draw='v' data-source='propuesta_resumen' data-field='indicadores' data-where='estado=En este tablero' class='dash-skeleton'>—</span></div>
-      <div class='ovh-chip'><span class='ovh-badge ovh-b2'>Descargable, por integrar</span><span class='ovh-big' data-draw='v' data-source='propuesta_resumen' data-field='indicadores' data-where='estado=Descargable, por integrar' class='dash-skeleton'>—</span></div>
-      <div class='ovh-chip'><span class='ovh-badge ovh-b3'>Requiere convenio</span><span class='ovh-big' data-draw='v' data-source='propuesta_resumen' data-field='indicadores' data-where='estado=Requiere convenio' class='dash-skeleton'>—</span></div>
-      <div class='ovh-chip'><span class='ovh-badge ovh-b4'>Por construir</span><span class='ovh-big' data-draw='v' data-source='propuesta_resumen' data-field='indicadores' data-where='estado=Por construir' class='dash-skeleton'>—</span></div>
+      <div class='ovh-chip'><span class='ovh-badge ovh-b1'>En este tablero</span><span class='ovh-big dash-skeleton' data-draw='v' data-source='propuesta_resumen' data-field='indicadores' data-where='estado=En este tablero'>—</span></div>
+      <div class='ovh-chip'><span class='ovh-badge ovh-b2'>Descargable, por integrar</span><span class='ovh-big dash-skeleton' data-draw='v' data-source='propuesta_resumen' data-field='indicadores' data-where='estado=Descargable, por integrar'>—</span></div>
+      <div class='ovh-chip'><span class='ovh-badge ovh-b3'>Requiere convenio</span><span class='ovh-big dash-skeleton' data-draw='v' data-source='propuesta_resumen' data-field='indicadores' data-where='estado=Requiere convenio'>—</span></div>
+      <div class='ovh-chip'><span class='ovh-badge ovh-b4'>Por construir</span><span class='ovh-big dash-skeleton' data-draw='v' data-source='propuesta_resumen' data-field='indicadores' data-where='estado=Por construir'>—</span></div>
     </div>
-    <div class='ovh-filters' id='propuesta-filtros'>
-      <select class='dash-select' data-draw='prop-dim' data-source='propuesta' aria-label='Dimensión'></select>
-      <select class='dash-select' data-draw='prop-estado' data-source='propuesta' aria-label='Estado'></select>
+    <div class='ovh-filtros' id='propuesta-filtros'>
+      <div class='ovh-campo'><label for='filtro-dimension'>Dimensión</label><select class='dash-select' id='filtro-dimension' data-draw='prop-dim' data-source='propuesta'></select></div>
+      <div class='ovh-campo'><label for='filtro-estado'>Estado</label><select class='dash-select' id='filtro-estado' data-draw='prop-estado' data-source='propuesta'></select></div>
     </div>
     <div class='ovh-tablewrap' id='propuesta-tabla'>
       <table class='ovh-table ovh-wide' data-source='propuesta' data-row-key='clave'>
@@ -375,26 +299,28 @@ span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
 
   <section class='ovh-sec' id='fuentes'>
     <h2>Fuentes y descargas</h2>
-    <p class='ovh-note'>Los archivos se descargaron de fuentes oficiales el 19 de noviembre de 2026 y se publican tal como los usa esta página.</p>
-    <div class='ovh-tablewrap'>
-      <table class='ovh-table'>
-        <thead><tr><th>Datos</th><th>Fuente</th><th>Periodo</th><th>Archivo</th></tr></thead>
-        <tbody>
-          <tr><td>Índice de precios de la vivienda: Hermosillo, Cajeme, Sonora y nacional</td><td>Sociedad Hipotecaria Federal (SHF)</td><td>1T-2005 a 3T-2026</td><td><a href='data/indice_precios_vivienda_hermosillo.csv' download>CSV</a></td></tr>
-          <tr><td>Créditos para vivienda por organismo, destino y modalidad, mensual</td><td>SEDATU · SNIIV</td><td>ene 2013 a ago 2026</td><td><a href='data/financiamiento_mensual.csv' download>CSV</a></td></tr>
-          <tr><td>Créditos por valor de la vivienda, ingreso del acreditado y género, anual</td><td>SEDATU · SNIIV</td><td>2013 a 2026 (ene–ago)</td><td><a href='data/financiamiento_perfil_anual.csv' download>CSV</a></td></tr>
-          <tr><td>Vivienda nueva registrada, en verificación y terminada, mensual</td><td>SEDATU · SNIIV (RUV)</td><td>ene 2013 a ago 2026</td><td><a href='data/oferta_mensual.csv' download>CSV</a></td></tr>
-          <tr><td>Inventario de vivienda nueva, mensual</td><td>SEDATU · SNIIV (RUV)</td><td>ene 2014 a ago 2026</td><td><a href='data/inventario_mensual.csv' download>CSV</a></td></tr>
-          <tr><td>Principales resultados por AGEB urbana del municipio</td><td>INEGI · Censo de Población y Vivienda 2020</td><td>2020</td><td><a href='data/hermosillo_ageb.csv' download>CSV</a></td></tr>
-          <tr><td>Límites de las AGEB urbanas de la ciudad, simplificados</td><td>INEGI · Marco Geoestadístico</td><td>diciembre de 2025</td><td><a href='data/ageb_geometria.json' download>JSON</a></td></tr>
-          <tr><td>Catálogo de indicadores propuestos</td><td>Elaboración propia del observatorio</td><td>—</td><td><a href='data/propuesta_indicadores.csv' download>CSV</a></td></tr>
-        </tbody>
-      </table>
+    <div class='ovh-panel'>
+      <p class='ovh-sub'>Los archivos se descargaron de fuentes oficiales el 19 de noviembre de 2026 y se publican tal como los usa esta página.</p>
+      <div class='ovh-tablewrap'>
+        <table class='ovh-table'>
+          <thead><tr><th>Datos</th><th>Fuente</th><th>Periodo</th><th>Archivo</th></tr></thead>
+          <tbody>
+            <tr><td>Índice de precios de la vivienda: Hermosillo, Cajeme, Sonora y nacional</td><td>Sociedad Hipotecaria Federal (SHF)</td><td>1T-2005 a 3T-2026</td><td><a class='ovh-enlace' href='data/indice_precios_vivienda_hermosillo.csv' download>CSV</a></td></tr>
+            <tr><td>Créditos para vivienda por organismo, destino y modalidad, mensual</td><td>SEDATU · SNIIV</td><td>ene 2013 a ago 2026</td><td><a class='ovh-enlace' href='data/financiamiento_mensual.csv' download>CSV</a></td></tr>
+            <tr><td>Créditos por valor de la vivienda, ingreso del acreditado y género, anual</td><td>SEDATU · SNIIV</td><td>2013 a 2026 (ene–ago)</td><td><a class='ovh-enlace' href='data/financiamiento_perfil_anual.csv' download>CSV</a></td></tr>
+            <tr><td>Vivienda nueva registrada, en verificación y terminada, mensual</td><td>SEDATU · SNIIV (RUV)</td><td>ene 2013 a ago 2026</td><td><a class='ovh-enlace' href='data/oferta_mensual.csv' download>CSV</a></td></tr>
+            <tr><td>Inventario de vivienda nueva, mensual</td><td>SEDATU · SNIIV (RUV)</td><td>ene 2014 a ago 2026</td><td><a class='ovh-enlace' href='data/inventario_mensual.csv' download>CSV</a></td></tr>
+            <tr><td>Principales resultados por AGEB urbana del municipio</td><td>INEGI · Censo de Población y Vivienda 2020</td><td>2020</td><td><a class='ovh-enlace' href='data/hermosillo_ageb.csv' download>CSV</a></td></tr>
+            <tr><td>Límites de las AGEB urbanas de la ciudad, simplificados</td><td>INEGI · Marco Geoestadístico</td><td>diciembre de 2025</td><td><a class='ovh-enlace' href='data/ageb_geometria.json' download>JSON</a></td></tr>
+            <tr><td>Catálogo de indicadores propuestos</td><td>Elaboración propia del observatorio</td><td>—</td><td><a class='ovh-enlace' href='data/propuesta_indicadores.csv' download>CSV</a></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
   <details class='ovh-details' id='notas'>
-    <summary>Notas y definiciones</summary>
+    <summary>Metodología, notas y definiciones</summary>
     <dl>
       <dt>Índice SHF de precios de la vivienda</dt>
       <dd>Publicado cada trimestre por la Sociedad Hipotecaria Federal con base en avalúos de viviendas con crédito hipotecario garantizado. La variación anual compara cada trimestre con el mismo trimestre del año anterior.</dd>
@@ -414,18 +340,52 @@ span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
       <dd>En este tablero: calculado aquí con datos descargados. Descargable, por integrar: dato abierto aún no cargado. Requiere convenio: información de registros administrativos que exige un acuerdo con la institución. Por construir: indicador que necesita metodología o captura propia.</dd>
     </dl>
   </details>
-
-  <footer class='ovh-footer'>
-    <p>Observatorio de Vivienda de Hermosillo · Propuesta de indicadores.</p>
-    <p>Datos abiertos de INEGI, la Sociedad Hipotecaria Federal y SEDATU (SNIIV), usados con atribución a sus fuentes.</p>
-    <p><a href='https://github.com/arturodiazmo/observatorio-vivienda-hermosillo'>Código y datos en GitHub</a></p>
-  </footer>
 </div>
 </div>
+  </div>
+</main>
+<footer class='hcv-pie' data-theme='inverso'>
+  <div class='hcv-contenedor'>
+    <div class='hcv-pie__rejilla'>
+      <div>
+        <p class='hcv-pie__marca'>Hermosillo ¿Cómo Vamos?</p>
+        <p>Organización ciudadana, apartidista y sin fines de lucro. Hacer de lo público un reto.</p>
+      </div>
+      <div>
+        <h2>Tablero</h2>
+        <ul>
+          <li><a href='#precios'>Precios</a></li>
+          <li><a href='#financiamiento'>Financiamiento</a></li>
+          <li><a href='#oferta'>Oferta</a></li>
+          <li><a href='#territorio'>Territorio</a></li>
+          <li><a href='#habitabilidad'>Habitabilidad</a></li>
+          <li><a href='#propuesta'>Propuesta</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Datos</h2>
+        <ul>
+          <li><a href='#fuentes'>Fuentes y descargas</a></li>
+          <li><a href='#notas'>Metodología</a></li>
+          <li><a href='https://github.com/arturodiazmo/observatorio-vivienda-hermosillo'>Código en GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Observatorio de Vivienda</h2>
+        <p>Propuesta de indicadores con datos abiertos de INEGI, la Sociedad Hipotecaria Federal y SEDATU (SNIIV), usados con atribución a sus fuentes.</p>
+      </div>
+    </div>
+    <div class='hcv-pie__legal'>
+      <span>© 2026 Observatorio para la Competitividad y el Desarrollo de Sonora, A.C.</span>
+      <span>Mapa base: OpenFreeMap · datos de OpenStreetMap</span>
+    </div>
+  </div>
+</footer>
 <script src='js/d3.min.js'></script>
 <script src='js/dash-runtime.js'></script>
 <script src='js/app.js'></script>
 <script src='js/maplibre-gl.js'></script>
 <script src='js/mapa.js'></script>
+<script src='js/sitio.js'></script>
 </body>
 </html>

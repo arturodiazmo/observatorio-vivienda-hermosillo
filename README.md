@@ -12,6 +12,11 @@ Sitio web estático con la línea base del Observatorio de Vivienda de Hermosill
 | `js/app.js` | Cálculos de indicadores y gráficas |
 | `js/mapa.js` | Mapa de vivienda deshabitada por AGEB, con calles de fondo |
 | `js/dash-runtime.js` | Motor que carga los datos y dibuja la página |
+| `js/sitio.js` | Menú de la cabecera en pantallas angostas |
+| `css/tablero.css` | Estilos base del tablero |
+| `css/observatorio.css` | Ajustes del tablero al design system |
+| `assets/hcv/` | Design system Hermosillo ¿Cómo Vamos?: tokens, componentes web y tipografías |
+| `assets/fonts/` | Archivo, Source Sans 3 e IBM Plex Mono en woff2 (SIL Open Font License 1.1, licencias incluidas) |
 | `js/d3.min.js` | D3 v7 (ISC, © Mike Bostock) |
 | `js/maplibre-gl.js`, `css/maplibre-gl.css` | MapLibre GL JS v5 (BSD-3-Clause) |
 | `data/` | Datos usados por la página, en CSV y JSON |
@@ -28,6 +33,8 @@ Sitio web estático con la línea base del Observatorio de Vivienda de Hermosill
 | `hermosillo_ageb.csv` | INEGI, Censo de Población y Vivienda 2020 (resultados por AGEB) | 2020 |
 | `ageb_geometria.json` | INEGI, Marco Geoestadístico (AGEB urbanas, localidad 0001), simplificado a ~4 m | dic 2025 |
 | `propuesta_indicadores.csv` | Elaboración propia | — |
+
+El diseño usa el design system de Hermosillo ¿Cómo Vamos?: tema Papel y, si el lector prefiere modo oscuro, tema Inverso; colores de datos `dato-1` a `dato-6` y rampa `secuencial` para el mapa.
 
 El mapa base es de [OpenFreeMap](https://openfreemap.org) (estilos Positron y Dark, © OpenMapTiles, datos © colaboradores de OpenStreetMap), gratuito y sin clave de acceso.
 
