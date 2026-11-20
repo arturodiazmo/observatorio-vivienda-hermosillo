@@ -1,0 +1,146 @@
+/* Observatorio de Vivienda de Hermosillo — estilos del sitio sobre el design system Hermosillo ¿Cómo Vamos?
+   Se carga después de tablero.css (los estilos del tablero de Claude) y lo ajusta a los tokens y componentes del sistema. */
+
+/* 1. Puente: variables que usa el tablero → tokens del sistema. Se recalculan dentro de cada [data-theme]. */
+:root, [data-theme] {
+  --color-fg: var(--tinta); --color-fg-muted: var(--tinta-2); --color-bg: var(--papel); --color-panel: var(--papel); --color-border-line: var(--linea);
+  --font-anthropic-sans: var(--font-texto); --font-anthropic-serif: var(--font-display);
+  --cds-font-size-caption: 13px; --cds-font-size-body: 15px; --cds-font-size-heading: 28px; --cds-font-size-title: 40px; --cds-font-weight-medium: 600;
+  --cds-gap-xs: var(--espacio-1); --cds-gap-sm: var(--espacio-2); --cds-gap-md: var(--espacio-4); --cds-gap-lg: var(--espacio-5); --cds-gap-xl: var(--espacio-7);
+  --cds-pad-sm: var(--espacio-2); --cds-pad-md: var(--espacio-3); --cds-pad-lg: var(--espacio-5); --cds-radius: var(--radio-0);
+  --cds-chart-grid: var(--linea); --cds-chart-axis: var(--linea-fuerte); --cds-chart-muted: var(--dato-sin-dato); --cds-text-secondary: var(--tinta-3);
+  --cds-surface-popover: var(--tinta); --cds-border: var(--tinta); --cds-shadow-popover: var(--sombra-flotante);
+}
+:root { color-scheme: light dark; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+[id] { scroll-margin-top: calc(var(--cabecera-alto) + var(--espacio-4)); }
+
+/* 2. Colores de datos: series dato-1…6 (las pone dash-runtime.js), rampa secuencial y sin dato del sistema */
+.ovh { --ovh-seq-1: var(--secuencial-1); --ovh-seq-2: var(--secuencial-2); --ovh-seq-3: var(--secuencial-3); --ovh-seq-4: var(--secuencial-4); --ovh-seq-5: var(--secuencial-5);
+  --ovh-tenue: var(--azul-claro); --ovh-nd: var(--dato-sin-dato); gap: var(--espacio-7); }
+
+/* 3. Encabezado del tablero */
+.ovh-cab { gap: var(--espacio-3); }
+.ovh-etiqueta { font: 500 11px/16px var(--font-datos); letter-spacing: 0.06em; text-transform: uppercase; color: var(--azul-texto); }
+.ovh-titulo { font-family: var(--font-display); font-size: 40px; line-height: 44px; font-weight: 700; letter-spacing: -0.015em; color: var(--tinta); max-width: 22ch; }
+.ovh-actualizado { font: 400 14px/20px var(--font-texto); color: var(--tinta-2); }
+.ovh-entradilla { font: 400 19px/28px var(--font-texto); max-width: var(--medida-lectura); color: var(--tinta); }
+.ovh-entradilla b, .ovh-text b, .ovh-h3 b { font-weight: 700; }
+#dash-root a:not(.hcv-boton) { color: var(--azul-texto); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+#dash-root a:not(.hcv-boton):hover { color: var(--tinta); text-decoration-thickness: 2px; }
+@media (max-width: 640px) { .ovh-titulo { font-size: 30px; line-height: 36px; } .ovh-entradilla { font-size: 17px; line-height: 26px; } }
+
+/* 4. Indicadores clave (hcv-kpi) */
+.ovh-kpis { gap: var(--espacio-4); }
+.ovh-kpi { background: var(--papel); border: 1px solid var(--linea); border-radius: 0; padding: var(--espacio-5); gap: var(--espacio-2); }
+.ovh-kpi-nombre { font: 600 16px/22px var(--font-texto); color: var(--tinta); }
+.ovh-big { font-family: var(--font-display); font-weight: 700; font-size: 40px; line-height: 44px; letter-spacing: -0.02em; color: var(--tinta); }
+.ovh-cambio { font: 400 14px/20px var(--font-texto); color: var(--tinta-2); }
+.ovh-fuente { font: 400 13px/18px var(--font-texto); color: var(--tinta-3); }
+
+/* 5. Secciones y paneles (hcv-panel) */
+.ovh-sec { gap: var(--espacio-4); }
+.ovh-sec > h2 { font-family: var(--font-display); font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em; color: var(--tinta); padding-top: var(--espacio-4); border-top: var(--trazo-grueso) solid var(--tinta); }
+.ovh-rejilla { gap: var(--espacio-4); }
+.ovh-panel { background: var(--papel); border: 1px solid var(--linea); border-radius: 0; padding: var(--espacio-5); gap: var(--espacio-3); }
+.ovh-h3 { font-family: var(--font-display); font-size: 21px; line-height: 27px; font-weight: 600; color: var(--tinta); }
+.ovh-sub { font: 400 14px/20px var(--font-texto); color: var(--tinta-2); }
+.ovh-text { font: 400 16px/24px var(--font-texto); max-width: var(--medida-lectura); }
+.ovh-pie { border-top-color: var(--linea); padding-top: var(--espacio-3); gap: var(--espacio-2) var(--espacio-4); }
+.ovh .ovh-solo-sitio { display: inline !important; }
+.ovh-enlace { font: 600 13px/18px var(--font-texto); white-space: nowrap; }
+.ovh-enlace::after { content: " \2193"; }
+@media (max-width: 640px) { .ovh-sec > h2 { font-size: 24px; line-height: 30px; } .ovh-panel, .ovh-kpi { padding: var(--espacio-4); } .ovh-big { font-size: 34px; line-height: 38px; } }
+
+/* 6. Gráficas */
+.ovh-axis text { fill: var(--tinta-3); font-family: var(--font-datos); font-size: 11px; }
+.ovh-labels text, .ovh-ends text, .ovh-vals text { fill: var(--tinta); font-family: var(--font-texto); font-size: 13px; }
+.ovh-grid line { stroke: var(--linea); }
+.ovh-baseline, .ovh-ref { stroke: var(--linea-fuerte); }
+.ovh-rule { stroke: var(--tinta-2); }
+.ovh-dot { stroke: var(--papel); }
+.ovh-hueco { fill: var(--papel); }
+.ovh-legend { font: 400 13px/18px var(--font-texto); color: var(--tinta-2); gap: var(--espacio-1) var(--espacio-4); }
+.ovh-sw.ovh-ln { border-radius: 0; height: 3px; }
+.ovh-sw-empty { border-color: var(--linea-fuerte); }
+.ovh-sw-rank { background: var(--tinta); color: var(--papel); font-family: var(--font-texto); font-weight: 700; }
+
+/* Tooltip (hcv-tip): fondo tinta, valor primero y en negritas */
+.ovh-tip, .ovh-popup .maplibregl-popup-content { background: var(--tinta); color: var(--papel); border: 0; border-radius: 0; box-shadow: var(--sombra-flotante); padding: var(--espacio-2) var(--espacio-3); font: 400 13px/18px var(--font-texto); min-width: 160px; z-index: var(--capa-tooltip); }
+.ovh-tip-t { font-weight: 600; margin-bottom: var(--espacio-1); }
+.ovh-tip-r { gap: var(--espacio-2); line-height: 20px; }
+.ovh-tip-r i { border-radius: 0; }
+.ovh-tip-r span { color: inherit; opacity: 0.82; }
+
+/* 7. Controles: segmentado, botón secundario chico, campos */
+.ovh-seg { border: 1px solid var(--linea-fuerte); border-radius: 0; }
+.ovh-seg button { min-height: 36px; padding: 0 var(--espacio-3); font: 600 14px/20px var(--font-texto); color: var(--tinta); background: var(--papel); transition: background-color var(--duracion-rapida) var(--curva); }
+.ovh-seg button:hover { background: var(--papel-azul); }
+.ovh-seg button + button { border-left-color: var(--linea-fuerte); }
+.ovh-seg button[aria-pressed='true'] { background: var(--accion); color: var(--sobre-accion); }
+.ovh-btn { min-height: 36px; padding: 0 var(--espacio-4); border: var(--trazo-medio) solid var(--azul-texto); border-radius: var(--radio-1); background: transparent; color: var(--azul-texto); font: 600 14px/20px var(--font-texto); }
+.ovh-btn:hover:not(:disabled) { background: var(--papel-azul); color: var(--tinta); border-color: var(--tinta); }
+.ovh-btn:disabled { background: var(--deshabilitado-fondo); color: var(--deshabilitado); border-color: transparent; opacity: 1; cursor: not-allowed; }
+.ovh-filtros { gap: var(--espacio-4); }
+.ovh-campo { gap: var(--espacio-1); }
+.ovh-campo label { font: 600 15px/20px var(--font-texto); color: var(--tinta); }
+.dash-select { box-sizing: border-box; min-height: var(--objetivo-tactil); padding: var(--espacio-2) var(--espacio-7) var(--espacio-2) var(--espacio-3); border: 1px solid var(--linea-fuerte); border-radius: var(--radio-1); background-color: var(--papel); color: var(--tinta); font: 400 16px/24px var(--font-texto); appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--tinta-2) 50%), linear-gradient(135deg, var(--tinta-2) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+.dash-select:hover { border-color: var(--tinta-2); }
+
+/* 8. Tablas (hcv-tabla) e insignias de estado */
+.ovh-table { font: 400 13px/18px var(--font-texto); }
+.ovh-table th { color: var(--tinta-2); font-weight: 600; border-bottom: var(--trazo-medio) solid var(--linea-fuerte); padding: var(--espacio-2) var(--espacio-3); }
+.ovh-table td { border-bottom: 1px solid var(--linea); padding: var(--espacio-2) var(--espacio-3); }
+.ovh [data-draw='ageb-tabla'] tr:hover td { background: var(--papel-azul); }
+.ovh-mono { font-family: var(--font-datos); font-size: 12px; }
+.ovh-def { color: var(--tinta-2); }
+.ovh-badge { font-weight: 600; }
+.ovh-chips { gap: var(--espacio-3); }
+.ovh-chip { background: var(--papel); border: 1px solid var(--linea); border-radius: 0; padding: var(--espacio-4); gap: var(--espacio-2); }
+.ovh-chip .ovh-big { font-size: 28px; line-height: 34px; }
+
+/* 9. Mapa con calles (MapLibre + OpenFreeMap) y respaldo SVG */
+.ovh [data-draw='ageb-mapa'] { min-height: 380px; }
+.ovh-mapa-gl { height: clamp(380px, 64vh, 620px); border: 1px solid var(--linea); overflow: hidden; }
+.ovh-ageb { stroke: var(--papel); }
+.ovh-ageb-top, .ovh-ageb-hl { stroke: var(--tinta); }
+.ovh-ageb-hl { fill: var(--tinta); }
+.ovh-map-labels circle { fill: var(--tinta); stroke: var(--papel); }
+.ovh-map-labels text { fill: var(--papel); font-family: var(--font-texto); font-weight: 700; }
+.ovh-rank { width: 22px; height: 22px; border-radius: 50%; background: var(--tinta); color: var(--papel); border: 2px solid var(--papel); font: 700 12px/1 var(--font-texto); display: flex; align-items: center; justify-content: center; pointer-events: none; font-variant-numeric: tabular-nums; }
+.ovh-popup { pointer-events: none; }
+.ovh-popup .maplibregl-popup-tip { display: none; }
+.maplibregl-ctrl-group { border-radius: 0 !important; box-shadow: none !important; border: 1px solid var(--linea-fuerte); background: var(--papel); }
+.maplibregl-ctrl-group button { width: 36px; height: 36px; }
+.maplibregl-ctrl-group button + button { border-top-color: var(--linea); }
+.maplibregl-ctrl-attrib { font-family: var(--font-texto); }
+.maplibregl-ctrl-attrib a { color: var(--azul-texto); }
+@media (prefers-color-scheme: dark) {
+  .maplibregl-ctrl button .maplibregl-ctrl-icon { filter: invert(1); }
+  .maplibregl-ctrl-attrib, .maplibregl-ctrl-attrib.maplibregl-compact { background: color-mix(in srgb, var(--papel) 88%, transparent); color: var(--tinta-2); }
+  .maplibregl-ctrl-attrib-button { filter: invert(1); }
+}
+
+/* 10. Metodología, carga y errores */
+.ovh-details { border-top: var(--trazo-grueso) solid var(--tinta); padding-top: var(--espacio-4); }
+.ovh-details summary { font: 600 17px/24px var(--font-display); color: var(--tinta); min-height: var(--objetivo-tactil); display: flex; align-items: center; gap: var(--espacio-2); }
+.ovh-details summary::marker { color: var(--azul-texto); }
+.ovh-details dl { font: 400 14px/20px var(--font-texto); }
+.ovh-details dt { font-weight: 600; }
+.ovh-details dd { color: var(--tinta-2); }
+.dash-skeleton { background: var(--linea) !important; color: transparent !important; border-radius: 0; }
+.dash-skeleton > * { visibility: hidden; }
+span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
+@media (prefers-reduced-motion: no-preference) { .dash-skeleton { animation: ovh-pulso 1.4s ease-in-out infinite; } }
+@keyframes ovh-pulso { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+.ovh-error { color: var(--tinta-2); }
+
+/* 11. Marco del sitio */
+.ovh-marca-sub { font: 500 11px/16px var(--font-datos); letter-spacing: 0.06em; text-transform: uppercase; color: var(--azul-texto); white-space: nowrap; }
+.hcv-cabecera__marca { display: flex; flex-direction: column; gap: 2px; }
+.hcv-cabecera__menu { margin-left: auto; }
+.hcv-tablero { padding-top: var(--espacio-7); padding-bottom: var(--espacio-8); }
+@media (max-width: 640px) { .hcv-tablero { padding-top: var(--espacio-5); padding-bottom: var(--espacio-7); } }
+.ovh-kpis { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.ovh-sec > .ovh-tablewrap { background: var(--papel); border: 1px solid var(--linea); padding: var(--espacio-2) var(--espacio-3); }
