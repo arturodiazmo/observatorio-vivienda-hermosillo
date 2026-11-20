@@ -87,7 +87,7 @@
   }
 
   window.dash = {
-    colors: ['#4377BC', '#E3913F', '#2A9D8F', '#1E3A63', '#9DB9E0'],
+    colors: ['var(--dato-1)', 'var(--dato-2)', 'var(--dato-3)', 'var(--dato-4)', 'var(--dato-5)', 'var(--dato-6)'],
     data(id) {
       if (FUENTES[id]) {
         if (!estado[id]) cargar(id);

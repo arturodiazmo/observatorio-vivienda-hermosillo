@@ -25,8 +25,9 @@ dash.calc('ageb_top_resumen', {
 
 window.OVH = window.OVH || {};
 OVH.mapaZoom = OVH.mapaZoom || null;
-OVH.MAPA = ['#E6EEF8', '#BCD0EA', '#8DB0DE', '#4377BC', '#F0B47C', '#D9792A'];
-OVH.binDes = (p) => (p < 5 ? 0 : p < 10 ? 1 : p < 15 ? 2 : p < 20 ? 3 : p < 30 ? 4 : 5);
+// Rampa secuencial de cinco pasos del design system (variables CSS; MapLibre recibe los colores ya resueltos)
+OVH.MAPA = ['var(--ovh-seq-1)', 'var(--ovh-seq-2)', 'var(--ovh-seq-3)', 'var(--ovh-seq-4)', 'var(--ovh-seq-5)'];
+OVH.binDes = (p) => (p < 10 ? 0 : p < 15 ? 1 : p < 20 ? 2 : p < 30 ? 3 : 4);
 
 (() => {
   const ESTILOS = {claro: 'https://tiles.openfreemap.org/styles/positron', oscuro: 'https://tiles.openfreemap.org/styles/dark'};
@@ -76,7 +77,7 @@ OVH.binDes = (p) => (p < 5 ? 0 : p < 10 ? 1 : p < 15 ? 2 : p < 20 ? 3 : p < 30 ?
       l.textContent = lab;
       const b = document.createElement('b');
       b.textContent = val;
-      r.append(sw, l, b);
+      r.append(sw, b, l);
       caja.append(r);
     }
     return caja;
@@ -88,7 +89,7 @@ OVH.binDes = (p) => (p < 5 ? 0 : p < 10 ? 1 : p < 15 ? 2 : p < 20 ? 3 : p < 30 ?
       const v = valores.get(f.id);
       return {type: 'Feature', geometry: f.geometry, properties: {
         cvegeo: f.id, ageb: f.properties.ageb, lugar: lugar.get(f.id) || 0,
-        color: v ? OVH.MAPA[OVH.binDes(v.des_pct)] : '#000000', con_datos: v ? 1 : 0,
+        bin: v ? OVH.binDes(v.des_pct) : -1,
       }};
     })};
     const caja2 = (b) => [[b[0][0], b[0][1]], [b[1][0], b[1][1]]];
@@ -96,6 +97,8 @@ OVH.binDes = (p) => (p < 5 ? 0 : p < 10 ? 1 : p < 15 ? 2 : p < 20 ? 3 : p < 30 ?
     const todo = caja2(d3.geoBounds(fc));
     el.replaceChildren();
     const lienzo = document.createElement('div');
+    lienzo.setAttribute('role', 'region');
+    lienzo.setAttribute('aria-label', 'Mapa con calles de las AGEB urbanas de Hermosillo coloreadas por porcentaje de vivienda deshabitada en 2020; las 10 con más viviendas deshabitadas están numeradas.');
     lienzo.className = 'ovh-mapa-gl';
     el.append(lienzo);
     const map = new maplibregl.Map({
@@ -122,9 +125,15 @@ OVH.binDes = (p) => (p < 5 ? 0 : p < 10 ? 1 : p < 15 ? 2 : p < 20 ? 3 : p < 30 ?
     map.addControl(new maplibregl.NavigationControl({showCompass: false}), 'top-right');
     map.addControl(new maplibregl.AttributionControl({compact: true, customAttribution: 'Límites de AGEB: INEGI'}), 'bottom-right');
 
+    // Convierte una variable CSS del tema vigente en un color que MapLibre entienda
+    const sonda = document.createElement('i');
+    sonda.hidden = true;
+    el.append(sonda);
+    const resolver = (v) => { sonda.style.color = v; return getComputedStyle(sonda).color; };
     const capas = () => {
       const oscuroAhora = oscuro.matches;
-      const fg = oscuroAhora ? '#E6EAF0' : '#1F2328';
+      const fg = resolver('var(--tinta)');
+      const rampa = OVH.MAPA.map(resolver);
       if (!map.getSource('agebs')) map.addSource('agebs', {type: 'geojson', data: fc, promoteId: 'cvegeo'});
       const capasEstilo = map.getStyle().layers;
       // Relleno debajo de edificios y calles; contornos debajo de los nombres de calles
@@ -132,15 +141,16 @@ OVH.binDes = (p) => (p < 5 ? 0 : p < 10 ? 1 : p < 15 ? 2 : p < 20 ? 3 : p < 30 ?
       const bajoCalles = iCalles >= 0 ? capasEstilo[iCalles].id : undefined;
       const bajoEtiquetas = (capasEstilo.find((l, i) => i > iCalles && l.type === 'symbol') || {}).id;
       map.addLayer({id: 'ageb-relleno', type: 'fill', source: 'agebs',
-        paint: {'fill-color': ['get', 'color'], 'fill-opacity': ['case', ['==', ['get', 'con_datos'], 1], oscuroAhora ? 0.68 : 0.78, 0]}}, bajoCalles);
+        paint: {'fill-color': ['match', ['get', 'bin'], 0, rampa[0], 1, rampa[1], 2, rampa[2], 3, rampa[3], 4, rampa[4], 'rgba(0,0,0,0)'],
+          'fill-opacity': ['case', ['>=', ['get', 'bin'], 0], oscuroAhora ? 0.72 : 0.8, 0]}}, bajoCalles);
       map.addLayer({id: 'ageb-borde', type: 'line', source: 'agebs',
-        paint: {'line-color': oscuroAhora ? '#0F1620' : '#FFFFFF', 'line-width': ['interpolate', ['linear'], ['zoom'], 11, 0.4, 15, 1.2], 'line-opacity': 0.8}}, bajoCalles);
+        paint: {'line-color': resolver('var(--papel)'), 'line-width': ['interpolate', ['linear'], ['zoom'], 11, 0.4, 15, 1.2], 'line-opacity': 0.8}}, bajoCalles);
       map.addLayer({id: 'ageb-top', type: 'line', source: 'agebs', filter: ['>', ['get', 'lugar'], 0],
         paint: {'line-color': fg, 'line-width': 2.2}}, bajoEtiquetas);
       map.addLayer({id: 'ageb-hover', type: 'line', source: 'agebs',
         paint: {'line-color': fg, 'line-width': 3, 'line-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 1, 0]}}, bajoEtiquetas);
       map.addLayer({id: 'ageb-foco', type: 'line', source: 'agebs', filter: ['==', ['get', 'cvegeo'], OVH.mapaZoom || ''],
-        paint: {'line-color': '#E3913F', 'line-width': 3.5}}, bajoEtiquetas);
+        paint: {'line-color': resolver('var(--ovh-c2)'), 'line-width': 3.5}}, bajoEtiquetas);
     };
     map.on('style.load', capas);
 

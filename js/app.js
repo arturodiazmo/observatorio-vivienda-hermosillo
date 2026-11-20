@@ -92,6 +92,18 @@ dash.calc('fin_organismo', {
   },
 });
 
+dash.calc('monto_ratio', {
+  inputs: ['fin_organismo'],
+  title: 'Banca frente a Infonavit: monto promedio',
+  description: 'Cuántas veces es el monto promedio de un crédito bancario para comprar vivienda respecto al de Infonavit, último año completo.',
+  fn: (fin_organismo) => {
+    const b = fin_organismo.find((r) => r.grupo === 'Banca');
+    const i = fin_organismo.find((r) => r.grupo === 'Infonavit');
+    if (!b || !i || !b.monto_prom_adq || !i.monto_prom_adq) return [];
+    return [{anio: b.anio, banca: b.monto_prom_adq, infonavit: i.monto_prom_adq, veces: b.monto_prom_adq / i.monto_prom_adq}];
+  },
+});
+
 dash.calc('ingreso', {
   inputs: ['perfil', 'kpi_fin'],
   title: 'Créditos por ingreso del acreditado',
@@ -241,7 +253,7 @@ dash.calc('ageb_vacancia', {
   title: 'AGEB por tasa de vivienda deshabitada',
   description: 'AGEB urbanas con 20 o más viviendas particulares, agrupadas por su porcentaje de deshabitadas.',
   fn: (censo) => {
-    const rangos = [['<5%', 0, 5], ['5–10%', 5, 10], ['10–15%', 10, 15], ['15–20%', 15, 20], ['20–30%', 20, 30], ['≥30%', 30, 101]];
+    const rangos = [['<10%', 0, 10], ['10–15%', 10, 15], ['15–20%', 15, 20], ['20–30%', 20, 30], ['≥30%', 30, 101]];
     const out = rangos.map(([rango]) => ({rango, agebs: 0, deshabitadas: 0, alta: false}));
     for (const r of censo) {
       if (r.NIVEL !== 'ageb') continue;
@@ -308,7 +320,9 @@ window.OVH = window.OVH || {};
   O.shfModo = O.shfModo || 'var';
   O.filtro = O.filtro || {dim: '', estado: ''};
   O.MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-  O.C = {blue: '#4377BC', navy: '#1E3A63', orange: '#E3913F', teal: '#2A9D8F', light: '#9DB9E0', gray: '#A9B8CC'};
+  // Colores: variables CSS que el tablero llena con dash.colors y el sitio con los tokens del design system
+  O.C = {c1: 'var(--ovh-c1)', c2: 'var(--ovh-c2)', c3: 'var(--ovh-c3)', c4: 'var(--ovh-c4)', c5: 'var(--ovh-c5)', c6: 'var(--ovh-c6)', tenue: 'var(--ovh-tenue)', nd: 'var(--ovh-nd)'};
+  document.querySelectorAll('.ovh').forEach((el) => (dash.colors || []).slice(0, 6).forEach((c, i) => el.style.setProperty(`--ovh-c${i + 1}`, c)));
   const f0 = d3.format(',.0f');
   const f1 = d3.format(',.1f');
   const s1 = d3.format('+,.1f');
@@ -321,6 +335,7 @@ window.OVH = window.OVH || {};
       case 'spct1': return `${s1(n)}%`;
       case 'apct1': return `${f1(Math.abs(n))}%`;
       case 'dec2': return d3.format('.2f')(n);
+      case 'dec1': return d3.format('.1f')(n);
       case 'money': return `$${f0(n)}`;
       case 'year': return String(Math.round(n));
       default: return f0(n);
@@ -375,7 +390,7 @@ window.OVH = window.OVH || {};
           l.textContent = lab;
           const v = document.createElement('b');
           v.textContent = val;
-          r.append(sw, l, v);
+          r.append(sw, v, l);
           return r;
         });
         t.replaceChildren(h, ...items);
@@ -418,8 +433,9 @@ window.OVH = window.OVH || {};
     yt.attr('x', left - 6);
     const ends = cfg.series.map((s) => { const pts = s.points.filter(ok); const last = pts[pts.length - 1]; return last ? {s, last} : null; }).filter(Boolean);
     const eg = svg.append('g').attr('class', 'ovh-ends');
-    const et = eg.selectAll('text').data(ends).join('text').attr('dy', '0.32em').style('fill', (d) => d.s.color).attr('font-weight', 600).text((d) => cfg.endFmt(d.last.y));
-    const right = Math.ceil(medir(et)) + 10;
+    const et = eg.selectAll('text').data(ends).join('text').attr('dy', '0.32em').attr('font-weight', 600).text((d) => cfg.endFmt(d.last.y));
+    const ek = eg.selectAll('line').data(ends).join('line').style('stroke', (d) => d.s.color).attr('stroke-width', 3).attr('stroke-linecap', 'round');
+    const right = Math.ceil(medir(et)) + 22;
     x.range([left, W - right]);
     svg.insert('g', ':first-child').attr('class', 'ovh-grid').selectAll('line').data(yTicks).join('line')
       .attr('x1', left).attr('x2', W - right).attr('y1', (d) => y(d)).attr('y2', (d) => y(d));
@@ -439,17 +455,19 @@ window.OVH = window.OVH || {};
       if (corte > 0) {
         svg.append('path').attr('fill', 'none').style('stroke', s.color).attr('stroke-width', s.width || 2).attr('stroke-dasharray', '4 3').attr('d', line(pts.slice(corte - 1)));
         svg.append('g').selectAll('circle').data(pts.slice(corte).filter(ok)).join('circle')
-          .attr('cx', (p) => x(p.x)).attr('cy', (p) => y(p.y)).attr('r', 3.5).style('fill', 'var(--color-bg)').style('stroke', s.color).attr('stroke-width', 1.5);
+          .attr('cx', (p) => x(p.x)).attr('cy', (p) => y(p.y)).attr('r', 4).attr('class', 'ovh-hueco').style('stroke', s.color).attr('stroke-width', 2);
       }
     }
     const pos = ends.map((d) => ({d, y: y(d.last.y)})).sort((a, b) => a.y - b.y);
     for (let i = 1; i < pos.length; i++) if (pos[i].y - pos[i - 1].y < 14) pos[i].y = pos[i - 1].y + 14;
-    et.attr('x', (d) => x(d.last.x) + 6).attr('y', (d) => pos.find((p) => p.d === d).y);
+    et.attr('x', (d) => x(d.last.x) + 18).attr('y', (d) => pos.find((p) => p.d === d).y);
+    ek.attr('x1', (d) => x(d.last.x) + 6).attr('x2', (d) => x(d.last.x) + 13)
+      .attr('y1', (d) => pos.find((p) => p.d === d).y).attr('y2', (d) => pos.find((p) => p.d === d).y);
     eg.raise();
     const tip = O.tip(el);
     const foco = svg.append('g').style('display', 'none');
     const regla = foco.append('line').attr('class', 'ovh-rule').attr('y1', top).attr('y2', H - bottom);
-    const puntos = foco.selectAll('circle').data(cfg.series).join('circle').attr('r', 3.5).style('fill', (s) => s.color);
+    const puntos = foco.selectAll('circle').data(cfg.series).join('circle').attr('class', 'ovh-dot').attr('r', 4.5).style('fill', (s) => s.color);
     const xsU = Array.from(new Set(todos.map((p) => +p.x))).sort((a, b) => a - b);
     const mover = (ev) => {
       const [mx] = d3.pointer(ev, svg.node());
@@ -532,9 +550,12 @@ window.OVH = window.OVH || {};
       .attr('dy', '0.32em').attr('y', (r, i) => i * fila + fila / 2).text((r) => r.text);
     const right = Math.ceil(medir(vt)) + 10;
     const x = d3.scaleLinear().domain([0, d3.max(rows, (r) => r.value) || 1]).range([left, W - right]);
-    svg.insert('g', '.ovh-vals').selectAll('rect').data(rows).join('rect')
-      .attr('x', left).attr('y', (r, i) => i * fila + 6).attr('height', fila - 12)
-      .attr('width', (r) => Math.max(0, x(r.value || 0) - left)).attr('rx', 2).style('fill', (r) => r.color);
+    const barra = (x0, y0, w, h) => {
+      const r = Math.max(0, Math.min(4, w / 2, h / 2));
+      return `M${x0},${y0}h${Math.max(0, w - r)}a${r},${r} 0 0 1 ${r},${r}v${Math.max(0, h - 2 * r)}a${r},${r} 0 0 1 ${-r},${r}h${-Math.max(0, w - r)}z`;
+    };
+    svg.insert('g', '.ovh-vals').selectAll('path').data(rows).join('path')
+      .attr('d', (r, i) => barra(left, i * fila + 6, Math.max(0, x(r.value || 0) - left), fila - 12)).style('fill', (r) => r.color);
     vt.attr('x', (r) => x(r.value || 0) + 6);
     const tip = O.tip(el);
     svg.append('g').selectAll('rect').data(rows).join('rect')
@@ -564,6 +585,32 @@ dash.draw('v', (el) => {
   }
 });
 
+// Minilínea: filas que cumplen data-where (todas), campo data-field; data-completo filtra años de 12 meses; data-n toma los últimos n
+dash.draw('spark', (el) => {
+  const st = dash.data(el.dataset.source);
+  if (!OVH.status(el, st)) return;
+  let rows = OVH.rows(st);
+  if (el.dataset.where) {
+    const conds = el.dataset.where.split('&').map((p) => { const i = p.indexOf('='); return [decodeURIComponent(p.slice(0, i)), decodeURIComponent(p.slice(i + 1))]; });
+    rows = rows.filter((r) => conds.every(([k, v]) => String(r[k]) === v));
+  }
+  if (el.dataset.completo) rows = rows.filter((r) => +r[el.dataset.completo] === 12);
+  if (el.dataset.n) rows = rows.slice(-(+el.dataset.n));
+  const ys = rows.map((r) => (r[el.dataset.field] === null || r[el.dataset.field] === '' ? null : +r[el.dataset.field]));
+  el.replaceChildren();
+  if (ys.filter((v) => v !== null).length < 2) return;
+  const W = Math.max(120, Math.floor(el.clientWidth || 200));
+  const H = 40;
+  const x = d3.scaleLinear().domain([0, ys.length - 1]).range([2, W - 6]);
+  const y = d3.scaleLinear().domain(d3.extent(ys.filter((v) => v !== null))).nice().range([H - 4, 4]);
+  const svg = d3.select(el).append('svg').attr('class', 'ovh-svg').attr('viewBox', `0 0 ${W} ${H}`).attr('width', '100%').attr('height', H)
+    .attr('role', 'img').attr('aria-label', el.dataset.aria || 'Minilínea de la serie');
+  svg.append('path').attr('fill', 'none').style('stroke', OVH.C.c1).attr('stroke-width', 2).attr('stroke-linejoin', 'round')
+    .attr('d', d3.line().defined((v) => v !== null).x((v, i) => x(i)).y((v) => y(v))(ys));
+  const u = ys.length - 1;
+  if (ys[u] !== null) svg.append('circle').attr('class', 'ovh-dot').attr('cx', x(u)).attr('cy', y(ys[u])).attr('r', 3.5).style('fill', OVH.C.c1);
+});
+
 dash.draw('lede-verbo', (el) => {
   const st = dash.data('shf_ultimo');
   if (!OVH.status(el, st, true)) return;
@@ -585,7 +632,7 @@ dash.draw('shf-chart', (el) => {
   const st = dash.data('shf');
   if (!OVH.status(el, st)) return;
   const modo = OVH.shfModo;
-  const series = [['Hermosillo', OVH.C.blue, 2.5], ['Sonora', OVH.C.light, 1.5], ['Nacional', OVH.C.orange, 1.5]].map(([key, color, width]) => ({
+  const series = [['Hermosillo', OVH.C.c1, 2], ['Nacional', OVH.C.c2, 2], ['Sonora', OVH.C.c3, 2]].map(([key, color, width]) => ({
     key, color, width, label: OVH.lab(el, key),
     points: OVH.rows(st).filter((r) => r.serie === key).map((r) => ({
       x: new Date(Date.UTC(+r.anio, (+r.trimestre - 1) * 3 + 1, 15)), t: `${r.trimestre}T-${r.anio}`,
@@ -609,7 +656,7 @@ dash.draw('fin-chart', (el) => {
   const st = dash.data('fin_anual');
   if (!OVH.status(el, st)) return;
   const C = OVH.C;
-  const keys = [['Infonavit', C.blue], ['Banca', C.navy], ['CONAVI', C.orange], ['Fovissste', C.teal], ['Otros', C.gray]]
+  const keys = [['Infonavit', C.c1], ['Banca', C.c2], ['CONAVI', C.c3], ['Fovissste', C.c4], ['Otros', C.c5]]
     .map(([key, color]) => ({key, color, label: OVH.lab(el, key)}));
   const rows = OVH.rows(st).map((r) => ({...r, parcial: r.meses < 12}));
   OVH.stackedBars(el, {
@@ -626,7 +673,7 @@ dash.draw('ingreso-chart', (el) => {
     aria: 'Créditos para vivienda del último año completo por rango de ingreso del acreditado.',
     rows: OVH.rows(st).map((r) => ({
       label: r.rango, value: r.acciones, text: `${OVH.fmt(r.acciones)} · ${OVH.fmt(r.pct, 'pct1')}`,
-      color: r.rango === '2.6 o menos' || r.rango === '2.61 a 4.00' ? OVH.C.orange : r.rango === 'No disponible' ? OVH.C.gray : OVH.C.blue,
+      color: r.rango === '2.6 o menos' || r.rango === '2.61 a 4.00' ? OVH.C.c1 : r.rango === 'No disponible' ? OVH.C.nd : OVH.C.tenue,
       tip: [['Créditos', OVH.fmt(r.acciones), null], ['Participación', OVH.fmt(r.pct, 'pct1'), null]],
     })),
   });
@@ -638,7 +685,7 @@ dash.draw('fin-tabla', (tb) => {
   if (!st || st.status !== 'ok') return;
   for (const r of OVH.rows(st)) {
     const tr = document.createElement('tr');
-    for (const [v, cls] of [[r.grupo, ''], [OVH.fmt(r.acciones), 'ovh-num'], [OVH.fmt(r.pct, 'pct1'), 'ovh-num'], [OVH.fmt(r.monto_prom_adq, 'money'), 'ovh-num']]) {
+    for (const [v, cls] of [[r.grupo, ''], [OVH.fmt(r.acciones), 'ovh-num n'], [OVH.fmt(r.pct, 'pct1'), 'ovh-num n'], [OVH.fmt(r.monto_prom_adq, 'money'), 'ovh-num n']]) {
       const td = document.createElement('td');
       td.textContent = v;
       if (cls) td.className = cls;
@@ -653,7 +700,7 @@ dash.draw('oferta-chart', (el) => {
   if (!OVH.status(el, st)) return;
   const rows = OVH.rows(st);
   const parcial = rows.find((r) => r.meses < 12);
-  const series = [['registro', OVH.C.blue, 2.5], ['verificacion', OVH.C.teal, 2], ['produccion', OVH.C.orange, 2]].map(([key, color, width]) => ({
+  const series = [['registro', OVH.C.c1, 2], ['verificacion', OVH.C.c2, 2], ['produccion', OVH.C.c3, 2]].map(([key, color, width]) => ({
     key, color, width, label: OVH.lab(el, key), points: rows.map((r) => ({x: r.anio, y: r[key]})),
   }));
   const meses = new Map(rows.map((r) => [r.anio, r.meses]));
@@ -672,7 +719,7 @@ dash.draw('pcu-chart', (el) => {
     aria: 'Viviendas registradas en el último año completo por perímetro de contención urbana.',
     rows: OVH.rows(st).map((r) => ({
       label: r.pcu, value: r.viviendas, text: `${OVH.fmt(r.viviendas)} · ${OVH.fmt(r.pct, 'pct1')}`,
-      color: r.pcu === 'FC' ? OVH.C.orange : OVH.C.blue,
+      color: OVH.C.c1,
       tip: [['Viviendas', OVH.fmt(r.viviendas), null], ['Participación', OVH.fmt(r.pct, 'pct1'), null]],
     })),
   });
@@ -682,7 +729,7 @@ dash.draw('inv-chart', (el) => {
   const st = dash.data('inv_mensual');
   if (!OVH.status(el, st)) return;
   const series = [{
-    key: 'inventario', color: OVH.C.blue, width: 2, label: OVH.lab(el, 'inventario'),
+    key: 'inventario', color: OVH.C.c1, width: 2, label: OVH.lab(el, 'inventario'),
     points: OVH.rows(st).map((r) => ({x: new Date(Date.UTC(r.anio, r.mes - 1, 1)), y: r.viviendas})),
   }];
   OVH.lineChart(el, {
@@ -698,8 +745,8 @@ dash.draw('ageb-chart', (el) => {
   if (!OVH.status(el, st)) return;
   OVH.hbars(el, {
     aria: 'Número de AGEB urbanas por porcentaje de viviendas deshabitadas, Censo 2020.',
-    rows: OVH.rows(st).map((r) => ({
-      label: r.rango, value: r.agebs, text: OVH.fmt(r.agebs), color: r.alta ? OVH.C.orange : OVH.C.blue,
+    rows: OVH.rows(st).map((r, i) => ({
+      label: r.rango, value: r.agebs, text: OVH.fmt(r.agebs), color: OVH.MAPA ? OVH.MAPA[i] : OVH.C.c1,
       tip: [['AGEB', OVH.fmt(r.agebs), null], ['Viviendas deshabitadas', OVH.fmt(r.deshabitadas), null]],
     })),
   });
@@ -714,7 +761,7 @@ dash.draw('ageb-tabla', (tb) => {
     tr.addEventListener('pointerenter', () => { if (OVH.mapaResaltar) OVH.mapaResaltar(String(r.CVEGEO).slice(0, 13)); });
     tr.addEventListener('pointerleave', () => { if (OVH.mapaResaltar) OVH.mapaResaltar(null); });
     tr.addEventListener('click', () => { if (OVH.mapaAcercar) OVH.mapaAcercar(String(r.CVEGEO).slice(0, 13)); });
-    for (const [v, cls] of [[String(i + 1), 'ovh-num ovh-muted'], [r.AGEB, ''], [r.CVEGEO, 'ovh-mono'], [OVH.fmt(r.TVIVPAR), 'ovh-num'], [OVH.fmt(r.VIVPAR_DES), 'ovh-num'], [OVH.fmt(r.des_pct, 'pct1'), 'ovh-num']]) {
+    for (const [v, cls] of [[String(i + 1), 'ovh-num n ovh-muted'], [r.AGEB, ''], [r.CVEGEO, 'ovh-mono'], [OVH.fmt(r.TVIVPAR), 'ovh-num n'], [OVH.fmt(r.VIVPAR_DES), 'ovh-num n'], [OVH.fmt(r.des_pct, 'pct1'), 'ovh-num n']]) {
       const td = document.createElement('td');
       td.textContent = v;
       if (cls) td.className = cls;
@@ -731,7 +778,7 @@ dash.draw('hab-tabla', (tb) => {
   for (const r of OVH.rows(st)) {
     const tr = document.createElement('tr');
     tr.dataset.key = encodeURIComponent(r.clave);
-    for (const [v, cls] of [[r.indicador, ''], [OVH.fmt(r.viviendas), 'ovh-num'], [OVH.fmt(r.pct, 'pct1'), 'ovh-num'], [r.base_texto, 'ovh-muted']]) {
+    for (const [v, cls] of [[r.indicador, ''], [OVH.fmt(r.viviendas), 'ovh-num n'], [OVH.fmt(r.pct, 'pct1'), 'ovh-num n'], [r.base_texto, 'ovh-muted']]) {
       const td = document.createElement('td');
       td.textContent = v;
       if (cls) td.className = cls;
