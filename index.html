@@ -9,22 +9,23 @@
 <meta property='og:title' content='¿Cómo vamos con la vivienda en Hermosillo? — Observatorio de Vivienda'>
 <meta property='og:description' content='Precios, créditos, oferta de vivienda nueva, vivienda deshabitada por AGEB y una propuesta de indicadores para el Observatorio de Vivienda de Hermosillo, con datos abiertos de INEGI, SHF y SEDATU.'>
 <meta property='og:type' content='website'>
-<link rel='icon' href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%234377BC'/%3E%3Cpath d='M8 16 16 9l8 7v8h-5v-5h-6v5H8z' fill='white'/%3E%3C/svg%3E">
+<link rel='icon' type='image/png' sizes='32x32' href='assets/hcv/hcv-isotipo-32.png'>
+<link rel='apple-touch-icon' href='assets/hcv/hcv-isotipo-180.png'>
 <link rel='preload' href='assets/fonts/archivo-latin-700-normal.woff2' as='font' type='font/woff2' crossorigin>
 <link rel='preload' href='assets/fonts/source-sans-3-latin-400-normal.woff2' as='font' type='font/woff2' crossorigin>
 <link rel='stylesheet' href='assets/hcv/fonts.css'>
 <link rel='stylesheet' href='assets/hcv/tokens.css'>
-<link rel='stylesheet' href='assets/hcv/hcv.css'>
+<link rel='stylesheet' href='assets/hcv/bundle.css'>
 <link rel='stylesheet' href='css/maplibre-gl.css'>
 <link rel='stylesheet' href='css/tablero.css'>
 <link rel='stylesheet' href='css/observatorio.css'>
 </head>
 <body class='hcv-sitio'>
-<a class='hcv-saltar' href='#contenido'>Saltar al contenido</a>
 <header class='hcv-cabecera'>
+  <a class='hcv-saltar' href='#contenido'>Saltar al contenido</a>
   <div class='hcv-contenedor hcv-cabecera__barra'>
-    <a class='hcv-cabecera__marca' href='./'>Hermosillo ¿Cómo Vamos?<span class='ovh-marca-sub'>Observatorio de Vivienda</span></a>
-    <button type='button' class='hcv-boton hcv-boton--terciario hcv-boton--chico hcv-cabecera__menu' aria-expanded='false' aria-controls='nav-principal'><span class='hcv-icono-abrir'>Menú</span><span class='hcv-icono-cerrar'>Cerrar</span></button>
+    <a class='hcv-cabecera__marca' href='./'><img class='hcv-logo--color' src='assets/hcv/hcv-logotipo.png' width='128' height='60' alt='Hermosillo ¿Cómo Vamos?, inicio'><img class='hcv-logo--negativo' src='assets/hcv/hcv-logotipo-negativo.png' width='128' height='60' alt='Hermosillo ¿Cómo Vamos?, inicio'></a>
+    <button type='button' class='hcv-boton hcv-boton--secundario hcv-boton--chico hcv-cabecera__menu' data-hcv='menu' aria-expanded='false' aria-controls='nav-principal'><span class='hcv-icono-abrir'>Menú</span><span class='hcv-icono-cerrar'>Cerrar</span></button>
     <nav class='hcv-nav' id='nav-principal' aria-label='Secciones del tablero'>
       <ul>
           <li><a href='#precios'>Precios</a></li>
@@ -43,7 +44,7 @@
 <div id='dash-root'>
 <div class='ovh'>
   <header class='ovh-cab' id='encabezado'>
-    <p class='ovh-etiqueta'>Observatorio · Vivienda</p>
+    <nav class='hcv-migas ovh-migas' aria-label='Migas de pan'><ol><li>Observatorio</li><li>Tableros</li><li aria-current='page'>Vivienda</li></ol></nav>
     <h1 class='ovh-titulo'>¿Cómo vamos con la vivienda en Hermosillo?</h1>
     <p class='ovh-actualizado'>Datos al <span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span> en precios y a <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span> en créditos y vivienda nueva · <a href='#notas'>Metodología</a></p>
     <p class='ovh-entradilla' data-read lang='es-MX'>Al <span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span>, el precio de la vivienda en Hermosillo <span data-draw='lede-verbo' class='dash-skeleton'>—</span> <b data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Hermosillo' data-fmt='apct1' class='dash-skeleton'>—</b> anual, <span data-draw='lede-comp' class='dash-skeleton'>—</span> <b data-draw='v' data-source='shf_ultimo' data-field='var_anual_pct' data-where='serie=Nacional' data-fmt='apct1' class='dash-skeleton'>—</b> nacional. En <span data-draw='v' data-source='kpi_fin' data-field='anio' data-row='0' data-fmt='year' class='dash-skeleton'>—</span> se otorgaron <b data-draw='v' data-source='kpi_fin' data-field='total' data-row='0' class='dash-skeleton'>—</b> créditos para vivienda en el municipio, y el inventario de vivienda nueva sumó <b data-draw='v' data-source='kpi_inv' data-field='viviendas' data-row='0' class='dash-skeleton'>—</b> viviendas en <span data-draw='v' data-source='kpi_inv' data-field='mes_texto' data-row='0' data-fmt='text' class='dash-skeleton'>—</span>.</p>
@@ -115,8 +116,8 @@
       </div>
       <ul class='ovh-legend'>
         <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c1)'></i><span data-serie='Hermosillo'>Hermosillo</span></li>
-        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c2)'></i><span data-serie='Nacional'>Nacional</span></li>
-        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c3)'></i><span data-serie='Sonora'>Sonora</span></li>
+        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-ref)'></i><span data-serie='Nacional'>Nacional</span></li>
+        <li><i class='ovh-sw ovh-ln' style='background: var(--ovh-c2)'></i><span data-serie='Sonora'>Sonora</span></li>
       </ul>
       <div class='ovh-chart dash-skeleton' data-draw='shf-chart' data-source='shf'></div>
       <p class='ovh-text'>A cinco años (<span data-draw='v' data-source='shf_ultimo' data-field='periodo' data-where='serie=Hermosillo' data-fmt='text' class='dash-skeleton'>—</span>), el índice de Hermosillo acumula <b data-draw='v' data-source='shf_ultimo' data-field='var_5a_pct' data-where='serie=Hermosillo' data-fmt='spct1' class='dash-skeleton'>—</b>, frente a <b data-draw='v' data-source='shf_ultimo' data-field='var_5a_pct' data-where='serie=Nacional' data-fmt='spct1' class='dash-skeleton'>—</b> nacional y <b data-draw='v' data-source='shf_ultimo' data-field='var_5a_pct' data-where='serie=Sonora' data-fmt='spct1' class='dash-skeleton'>—</b> en Sonora.</p>
@@ -348,7 +349,7 @@
   <div class='hcv-contenedor'>
     <div class='hcv-pie__rejilla'>
       <div>
-        <p class='hcv-pie__marca'>Hermosillo ¿Cómo Vamos?</p>
+        <p class='hcv-pie__marca'><img src='assets/hcv/hcv-logotipo-negativo.png' width='187' height='88' alt='Hermosillo ¿Cómo Vamos?'></p>
         <p>Organización ciudadana, apartidista y sin fines de lucro. Hacer de lo público un reto.</p>
       </div>
       <div>
@@ -386,6 +387,7 @@
 <script src='js/app.js'></script>
 <script src='js/maplibre-gl.js'></script>
 <script src='js/mapa.js'></script>
+<script src='assets/hcv/bundle.js'></script>
 <script src='js/sitio.js'></script>
 </body>
 </html>
