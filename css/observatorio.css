@@ -15,20 +15,21 @@
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 [id] { scroll-margin-top: calc(var(--cabecera-alto) + var(--espacio-4)); }
 
-/* 2. Colores de datos: series dato-1…6 (las pone dash-runtime.js), rampa secuencial y sin dato del sistema */
+/* 2. Colores de datos: series dato-1…6 (las pone dash-runtime.js; Hermosillo siempre dato-1), comparación nacional en dato-referencia,
+   rampa secuencial naranja para el mapa, dato-contexto para lo no resaltado y dato-sin-dato */
 .ovh { --ovh-seq-1: var(--secuencial-1); --ovh-seq-2: var(--secuencial-2); --ovh-seq-3: var(--secuencial-3); --ovh-seq-4: var(--secuencial-4); --ovh-seq-5: var(--secuencial-5);
-  --ovh-tenue: var(--azul-claro); --ovh-nd: var(--dato-sin-dato); gap: var(--espacio-7); }
+  --ovh-tenue: var(--dato-contexto); --ovh-nd: var(--dato-sin-dato); --ovh-ref: var(--dato-referencia); gap: var(--espacio-7); }
 
 /* 3. Encabezado del tablero */
 .ovh-cab { gap: var(--espacio-3); }
-.ovh-etiqueta { font: 500 11px/16px var(--font-datos); letter-spacing: 0.06em; text-transform: uppercase; color: var(--azul-texto); }
-.ovh-titulo { font-family: var(--font-display); font-size: 40px; line-height: 44px; font-weight: 700; letter-spacing: -0.015em; color: var(--tinta); max-width: 22ch; }
+.ovh-etiqueta { font: 500 11px/16px var(--font-datos); letter-spacing: 0.06em; text-transform: uppercase; color: var(--naranja-texto); }
+.ovh-titulo { font-family: var(--font-display); font-size: 56px; line-height: 60px; font-weight: 800; letter-spacing: -0.02em; color: var(--tinta); max-width: 20ch; text-wrap: balance; }
 .ovh-actualizado { font: 400 14px/20px var(--font-texto); color: var(--tinta-2); }
 .ovh-entradilla { font: 400 19px/28px var(--font-texto); max-width: var(--medida-lectura); color: var(--tinta); }
 .ovh-entradilla b, .ovh-text b, .ovh-h3 b { font-weight: 700; }
-#dash-root a:not(.hcv-boton) { color: var(--azul-texto); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+#dash-root a:not(.hcv-boton) { color: var(--naranja-texto); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 #dash-root a:not(.hcv-boton):hover { color: var(--tinta); text-decoration-thickness: 2px; }
-@media (max-width: 640px) { .ovh-titulo { font-size: 30px; line-height: 36px; } .ovh-entradilla { font-size: 17px; line-height: 26px; } }
+@media (max-width: 640px) { .ovh-titulo { font-size: 36px; line-height: 40px; } .ovh-entradilla { font-size: 17px; line-height: 26px; } }
 
 /* 4. Indicadores clave (hcv-kpi) */
 .ovh-kpis { gap: var(--espacio-4); }
@@ -75,11 +76,11 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 /* 7. Controles: segmentado, botón secundario chico, campos */
 .ovh-seg { border: 1px solid var(--linea-fuerte); border-radius: 0; }
 .ovh-seg button { min-height: 36px; padding: 0 var(--espacio-3); font: 600 14px/20px var(--font-texto); color: var(--tinta); background: var(--papel); transition: background-color var(--duracion-rapida) var(--curva); }
-.ovh-seg button:hover { background: var(--papel-azul); }
+.ovh-seg button:hover { background: var(--papel-tinte); }
 .ovh-seg button + button { border-left-color: var(--linea-fuerte); }
 .ovh-seg button[aria-pressed='true'] { background: var(--accion); color: var(--sobre-accion); }
-.ovh-btn { min-height: 36px; padding: 0 var(--espacio-4); border: var(--trazo-medio) solid var(--azul-texto); border-radius: var(--radio-1); background: transparent; color: var(--azul-texto); font: 600 14px/20px var(--font-texto); }
-.ovh-btn:hover:not(:disabled) { background: var(--papel-azul); color: var(--tinta); border-color: var(--tinta); }
+.ovh-btn { min-height: 36px; padding: 0 var(--espacio-4); border: var(--trazo-medio) solid var(--naranja-texto); border-radius: var(--radio-1); background: transparent; color: var(--naranja-texto); font: 600 14px/20px var(--font-texto); }
+.ovh-btn:hover:not(:disabled) { background: var(--papel-tinte); color: var(--tinta); border-color: var(--tinta); }
 .ovh-btn:disabled { background: var(--deshabilitado-fondo); color: var(--deshabilitado); border-color: transparent; opacity: 1; cursor: not-allowed; }
 .ovh-filtros { gap: var(--espacio-4); }
 .ovh-campo { gap: var(--espacio-1); }
@@ -92,7 +93,7 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 .ovh-table { font: 400 13px/18px var(--font-texto); }
 .ovh-table th { color: var(--tinta-2); font-weight: 600; border-bottom: var(--trazo-medio) solid var(--linea-fuerte); padding: var(--espacio-2) var(--espacio-3); }
 .ovh-table td { border-bottom: 1px solid var(--linea); padding: var(--espacio-2) var(--espacio-3); }
-.ovh [data-draw='ageb-tabla'] tr:hover td { background: var(--papel-azul); }
+.ovh [data-draw='ageb-tabla'] tr:hover td { background: var(--papel-tinte); }
 .ovh-mono { font-family: var(--font-datos); font-size: 12px; }
 .ovh-def { color: var(--tinta-2); }
 .ovh-badge { font-weight: 600; }
@@ -115,7 +116,7 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 .maplibregl-ctrl-group button { width: 36px; height: 36px; }
 .maplibregl-ctrl-group button + button { border-top-color: var(--linea); }
 .maplibregl-ctrl-attrib { font-family: var(--font-texto); }
-.maplibregl-ctrl-attrib a { color: var(--azul-texto); }
+.maplibregl-ctrl-attrib a { color: var(--naranja-texto); }
 @media (prefers-color-scheme: dark) {
   .maplibregl-ctrl button .maplibregl-ctrl-icon { filter: invert(1); }
   .maplibregl-ctrl-attrib, .maplibregl-ctrl-attrib.maplibregl-compact { background: color-mix(in srgb, var(--papel) 88%, transparent); color: var(--tinta-2); }
@@ -125,7 +126,7 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 /* 10. Metodología, carga y errores */
 .ovh-details { border-top: var(--trazo-grueso) solid var(--tinta); padding-top: var(--espacio-4); }
 .ovh-details summary { font: 600 17px/24px var(--font-display); color: var(--tinta); min-height: var(--objetivo-tactil); display: flex; align-items: center; gap: var(--espacio-2); }
-.ovh-details summary::marker { color: var(--azul-texto); }
+.ovh-details summary::marker { color: var(--naranja-texto); }
 .ovh-details dl { font: 400 14px/20px var(--font-texto); }
 .ovh-details dt { font-weight: 600; }
 .ovh-details dd { color: var(--tinta-2); }
@@ -137,10 +138,10 @@ span.dash-skeleton, b.dash-skeleton { display: inline-block; min-width: 3.5em; }
 .ovh-error { color: var(--tinta-2); }
 
 /* 11. Marco del sitio */
-.ovh-marca-sub { font: 500 11px/16px var(--font-datos); letter-spacing: 0.06em; text-transform: uppercase; color: var(--azul-texto); white-space: nowrap; }
-.hcv-cabecera__marca { display: flex; flex-direction: column; gap: 2px; }
-.hcv-cabecera__menu { margin-left: auto; }
-.hcv-tablero { padding-top: var(--espacio-7); padding-bottom: var(--espacio-8); }
+.ovh-migas { margin-bottom: var(--espacio-1); }
+.hcv-tablero { padding-top: var(--espacio-6); padding-bottom: var(--espacio-8); }
 @media (max-width: 640px) { .hcv-tablero { padding-top: var(--espacio-5); padding-bottom: var(--espacio-7); } }
+/* Logotipo en negativo cuando el lector prefiere modo oscuro (tema Inverso en toda la página) */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="papel"]) { --hcv-logo-color: none; --hcv-logo-negativo: block; } }
 .ovh-kpis { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
 .ovh-sec > .ovh-tablewrap { background: var(--papel); border: 1px solid var(--linea); padding: var(--espacio-2) var(--espacio-3); }
