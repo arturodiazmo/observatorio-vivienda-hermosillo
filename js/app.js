@@ -632,7 +632,7 @@ dash.draw('shf-chart', (el) => {
   const st = dash.data('shf');
   if (!OVH.status(el, st)) return;
   const modo = OVH.shfModo;
-  const series = [['Hermosillo', OVH.C.c1, 2], ['Nacional', OVH.C.c2, 2], ['Sonora', OVH.C.c3, 2]].map(([key, color, width]) => ({
+  const series = [['Hermosillo', OVH.C.c1, 2], ['Nacional', 'var(--ovh-ref)', 2], ['Sonora', OVH.C.c2, 2]].map(([key, color, width]) => ({
     key, color, width, label: OVH.lab(el, key),
     points: OVH.rows(st).filter((r) => r.serie === key).map((r) => ({
       x: new Date(Date.UTC(+r.anio, (+r.trimestre - 1) * 3 + 1, 15)), t: `${r.trimestre}T-${r.anio}`,
